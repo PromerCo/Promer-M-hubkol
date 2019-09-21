@@ -1,0 +1,135 @@
+<?php
+namespace apiminip\modules\v1\controllers;
+use apiminip\common\helps\HttpCode;
+use apiminip\models\HubkolKol;
+use apiminip\models\HubkolPlatform;
+use apiminip\models\HubkolPull;
+use apiminip\models\HubkolPush;
+use apiminip\models\HubkolTags;
+use apiminip\modules\v1\models\WechatUser;
+use apiminip\services\ParamsValidateService;
+use apiminip\common\components\Redis;
+
+/**
+ * Site controller
+ */
+class KolController extends BaseController
+{
+    public  $enableCsrfValidation=false;
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
+    /*
+     * KOL 列表
+     */
+    public function actionList(){
+        $Hubs = HubkolPlatform::find()->with('retion')->select(['title','logo','id'])->asArray()->all();
+        foreach ($Hubs as $key =>$value){
+            foreach ($value['retion'] as $k =>$v){
+                $Hubs[$key]['retion'][$k]   = HubkolTags::find()->where(['id'=>$v['tags_id']])->select(['title','id'])->asArray()->one();
+            }
+        }
+        $list =  Redis::get('list');
+        Redis::del('list');
+        if (!$list){
+           $list = $Hubs;
+           Redis::set('list',$Hubs);
+        }
+        return  HttpCode::jsonObj($list,'ok','201');
+    }
+    /*
+     * 数据展示
+     */
+    public function  actionSpread(){
+        $data = \Yii::$app->request->post();
+        if (empty($data['type']) || $data['type']==0){
+            $result = HubkolKol::findBySql("SELECT wechat_user.avatar_url,hubkol_kol.tags,hubkol_kol.id,
+wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,
+hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol 
+LEFT JOIN wechat_user ON hubkol_kol.uid = wechat_user.id
+LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
+LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform")->asArray()->all();
+        }else{
+            $pvs = new ParamsValidateService();
+            $valid = $pvs->validate($data, [
+                [['platform_id'], 'required']
+            ]);
+            if (!$valid){
+                return  HttpCode::jsonObj([],$pvs->getErrorSummary(true),'416');
+            }
+            $platform_id = $data['platform_id'];
+ //       $tages_id =    $data['tages_id'];
+//        $result = HubkolPush::findBySql("select `hub_id`,`id`,`platform`,`follow_level`,`expire_time`,
+//        describe`,`type`,`convene`,`bystander`,`bystander_number`,`enroll`,`enroll_number`
+//        from hubkol_push where find_in_set($tages_id,tags) and `platform` = $platform_id")->asArray()->all();
+            $result = HubkolKol::findBySql("SELECT wechat_user.avatar_url,
+wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,hubkol_kol.tags,hubkol_kol.id,
+hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol 
+LEFT JOIN wechat_user ON hubkol_kol.uid = wechat_user.id
+LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
+LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id")->asArray()->all();
+        }
+        foreach ($result as $key=>$value){
+            $result[$key]['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();
+        }
+        return  HttpCode::jsonObj($result,'ok','201');
+    }
+
+    /*
+     * 我报名的栏目
+     */
+    public function actionLame(){
+        $uid =   $this->uid;   //获取用户ID
+        //查看用户角色
+        $capacity =   WechatUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();
+        switch ($capacity['capacity']){
+            case 0:
+                return  HttpCode::renderJSON([],'资料不存在','416');
+            break;
+            case 1:
+                $data =    HubkolPush::findBySql("SELECT  hubkol_push.title,hubkol_platform.logo FROM  hubkol_push 
+LEFT JOIN  hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id 
+LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
+WHERE hubkol_hub.uid =$uid")->asArray()->all();
+                return  HttpCode::renderJSON($data,'ok','201');
+            break;
+            case 2:
+            $data =    HubkolPull::findBySql("SELECT  hubkol_push.title,hubkol_platform.logo FROM  hubkol_pull LEFT JOIN  hubkol_kol ON hubkol_pull.kol_id = hubkol_kol.id 
+
+LEFT JOIN hubkol_push ON hubkol_pull.push_id = hubkol_push.id
+
+LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
+
+WHERE hubkol_kol.uid =$uid  ")->asArray()->all();
+                return  HttpCode::renderJSON($data,'ok','201');
+            break;
+        }
+
+
+    }
+   public function assoc_unique($arr, $key)
+    {
+        $tmp_arr = array();
+        foreach($arr as $k => $v)
+        {
+            if(in_array($v[$key], $tmp_arr))//搜索$v[$key]是否在$tmp_arr数组中存在，若存在返回true
+            {
+                unset($arr[$k]);
+            }
+            else {
+                $tmp_arr[] = $v[$key];
+            }
+        }
+        sort($arr); //sort函数对数组进行排序
+        return $arr;
+    }
+}
