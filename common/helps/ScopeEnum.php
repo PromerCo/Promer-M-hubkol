@@ -1,6 +1,6 @@
 <?php
 
-namespace apiminip\common\helps;
+namespace mhubkol\common\helps;
 /**
  * 接口访问权限枚举
  * 这种权限涉及是逐级式

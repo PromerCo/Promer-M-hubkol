@@ -1,6 +1,6 @@
 <?php
-namespace apiminip\controllers;
-use apiminip\common\services\applog\ApplogService;
+namespace mhubkol\controllers;
+use mhubkol\common\services\applog\ApplogService;
 use Yii;
 use yii\log\FileTarget;
 use yii\web\Controller;

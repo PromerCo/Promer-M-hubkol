@@ -1,9 +1,9 @@
 <?php
-namespace apiminip\services;
+namespace mhubkol\services;
 
-use apiminip\models\HubkolPush;
+use mhubkol\models\HubkolPush;
 
 class HubkolPushService extends HubkolPush{
 
-   
+
 }

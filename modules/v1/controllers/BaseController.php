@@ -1,6 +1,6 @@
 <?php
-namespace apiminip\modules\v1\controllers;
-use apiminip\common\services\TokenService;
+namespace mhubkol\modules\v1\controllers;
+use mhubkol\common\services\TokenService;
 use yii\base\InvalidCallException;
 use yii\redis\Connection;
 use yii\rest\Controller;

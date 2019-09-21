@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\controllers;
+namespace mhubkol\controllers;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -9,7 +9,7 @@ use yii\web\Controller;
  */
 class TokenController extends Controller
 {
-    public $modelClass = 'apiminip\models\WechatUser';
+    public $modelClass = 'mhubkol\models\WechatUser';
     /**
      * @inheritdoc
      */

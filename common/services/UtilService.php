@@ -1,6 +1,6 @@
 <?php
 
-namespace apiminip\common\services;
+namespace mhubkol\common\services;
 use  yii\helpers\Html;
 
 class UtilService {

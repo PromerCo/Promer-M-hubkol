@@ -5,7 +5,7 @@
  * Date: 2019/9/3 0003
  * Time: 18:04
  */
-namespace apiminip\modules\v1\validate;
+namespace mhubkol\modules\v1\validate;
 use yii\validators\ValidationAsset;
 class BaseValidate extends ValidationAsset {
 

@@ -1,10 +1,10 @@
 <?php
-namespace apiminip\services;
-use apiminip\common\components\HttpClient;
-use apiminip\common\helps\HttpCode;
-use apiminip\common\helps\ScopeEnum;
-use apiminip\common\services\TokenService;
-use apiminip\models\WechatUser;
+namespace mhubkol\services;
+use mhubkol\common\components\HttpClient;
+use mhubkol\common\helps\HttpCode;
+use mhubkol\common\helps\ScopeEnum;
+use mhubkol\common\services\TokenService;
+use mhubkol\models\WechatUser;
 use yii\web\BadRequestHttpException;
 
 class UserTokenService extends TokenService {

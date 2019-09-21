@@ -1,2 +1,2 @@
 <?php
-Yii::setAlias('@apiminip', dirname(dirname(__DIR__)) . '/apiminip');
+Yii::setAlias('@mhubkol', dirname(dirname(__DIR__)) . '/mhubkol');

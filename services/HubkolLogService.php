@@ -1,6 +1,6 @@
 <?php
-namespace apiminip\services;
-use apiminip\models\log\HubkolLog;
+namespace mhubkol\services;
+use mhubkol\models\log\HubkolLog;
 
 class HubkolLogService extends HubkolLog{
 

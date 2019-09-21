@@ -5,7 +5,7 @@
  * Date: 2019/9/4 0004
  * Time: 15:15
  */
-namespace apiminip\common\helps;
+namespace mhubkol\common\helps;
 
 use yii\web\Controller;
 
@@ -40,4 +40,3 @@ class HttpCode extends Controller{
         return     \Yii::$app->end();
     }
 }
-

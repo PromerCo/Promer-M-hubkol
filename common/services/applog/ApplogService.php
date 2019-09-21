@@ -1,8 +1,8 @@
 <?php
 
-namespace apiminip\common\services\applog;
-use apiminip\common\services\UtilService;
-use apiminip\models\log\HubkolLog;
+namespace mhubkol\common\services\applog;
+use mhubkol\common\services\UtilService;
+use mhubkol\models\log\HubkolLog;
 use Yii;
 
 class ApplogService {

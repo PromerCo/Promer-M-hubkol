@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\controllers\v1;
+namespace mhubkol\controllers\v1;
 use yii\web\Controller;
 
 class BaseController extends Controller

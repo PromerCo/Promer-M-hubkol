@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\modules\v1\controllers;
+namespace mhubkol\modules\v1\controllers;
 use yii\web\Controller;
 use Yii;
 
@@ -8,7 +8,7 @@ use Yii;
  */
 class SiteController extends Controller
 {
-    public $modelClass = 'apiminip\modules\v1\models\guide';
+    public $modelClass = 'mhubkol\modules\v1\models\guide';
     /**
      * @inheritdoc  验证码
      */

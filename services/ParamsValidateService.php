@@ -1,6 +1,6 @@
 <?php
-namespace apiminip\services;
-use apiminip\modules\v1\validate\ParamsValidateModel;
+namespace mhubkol\services;
+use mhubkol\modules\v1\validate\ParamsValidateModel;
 use yii\base\Component;
 /**
  * Class ParamsValidateService

@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\modules\v1\validate;
+namespace mhubkol\modules\v1\validate;
 
 use yii\db\ActiveRecord;
 

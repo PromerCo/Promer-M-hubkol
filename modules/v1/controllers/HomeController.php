@@ -1,9 +1,9 @@
 <?php
-namespace apiminip\modules\v1\controllers;
-use apiminip\common\helps\Common;
-use apiminip\common\helps\HttpCode;
-use apiminip\models\HubkolPush;
-use apiminip\models\HubkolTags;
+namespace mhubkol\modules\v1\controllers;
+use mhubkol\common\helps\Common;
+use mhubkol\common\helps\HttpCode;
+use mhubkol\models\HubkolPush;
+use mhubkol\models\HubkolTags;
 use yii\web\Controller;
 
 /**
@@ -34,10 +34,10 @@ class HomeController extends Controller
 hubkol_push.convene,hubkol_push.bystander_number,hubkol_push.enroll_number,hubkol_push.expire_time,hubkol_push.create_date,
 hubkol_follow.title,hubkol_hub.wechat,hubkol_hub.phone,hubkol_hub.email,wechat_user.nick_name,wechat_user.avatar_url,
 hubkol_platform.logo,hubkol_platform.id as platform_id,hubkol_platform.title as platform_title
-FROM hubkol_push  LEFT JOIN hubkol_follow ON hubkol_push.follow_level = hubkol_follow.id  
-LEFT JOIN hubkol_platform ON hubkol_push.platform = hubkol_platform.id 
-LEFT JOIN hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id  
-LEFT JOIN wechat_user ON wechat_user.id = hubkol_hub.uid  
+FROM hubkol_push  LEFT JOIN hubkol_follow ON hubkol_push.follow_level = hubkol_follow.id
+LEFT JOIN hubkol_platform ON hubkol_push.platform = hubkol_platform.id
+LEFT JOIN hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
+LEFT JOIN wechat_user ON wechat_user.id = hubkol_hub.uid
 LEFT JOIN hubkol_pull ON hubkol_pull.push_id = hubkol_push.id
 GROUP BY hubkol_push.id ORDER by hubkol_push.create_date DESC LIMIT 0,8")->asArray()->all();
   foreach ($data as $key=>$value){

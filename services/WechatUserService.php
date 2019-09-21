@@ -1,9 +1,9 @@
 <?php
-namespace apiminip\services;
-use apiminip\common\helps\HttpCode;
-use apiminip\models\HubkolHub;
-use apiminip\models\HubkolKol;
-use apiminip\models\WechatUser;
+namespace mhubkol\services;
+use mhubkol\common\helps\HttpCode;
+use mhubkol\models\HubkolHub;
+use mhubkol\models\HubkolKol;
+use mhubkol\models\WechatUser;
 
 class WechatUserService extends WechatUser{
 

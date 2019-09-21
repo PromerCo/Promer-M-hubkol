@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\models;
+namespace mhubkol\models;
 
 use Yii;
 
@@ -334,7 +334,7 @@ class HubkolPull extends \backend\models\BaseModel
 //                         'udc'=>'',
                     ),
 		        );
-        
+
     }
- 
+
 }

@@ -1,11 +1,11 @@
 <?php
-namespace apiminip\modules\v1\controllers;
-use apiminip\common\helps\HttpCode;
-use apiminip\models\HubkolHub;
-use apiminip\models\HubkolKol;
-use apiminip\models\WechatUser;
-use apiminip\services\ParamsValidateService;
-use apiminip\services\WechatUserService;
+namespace mhubkol\modules\v1\controllers;
+use mhubkol\common\helps\HttpCode;
+use mhubkol\models\HubkolHub;
+use mhubkol\models\HubkolKol;
+use mhubkol\models\WechatUser;
+use mhubkol\services\ParamsValidateService;
+use mhubkol\services\WechatUserService;
 
 /**
  * Site controller

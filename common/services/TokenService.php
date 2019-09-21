@@ -1,8 +1,8 @@
 <?php
-namespace apiminip\common\services;
-use apiminip\common\helps\Common;
-use apiminip\common\helps\HttpCode;
-use apiminip\common\helps\ScopeEnum;
+namespace mhubkol\common\services;
+use mhubkol\common\helps\Common;
+use mhubkol\common\helps\HttpCode;
+use mhubkol\common\helps\ScopeEnum;
 class TokenService
 {
     // 生成令牌

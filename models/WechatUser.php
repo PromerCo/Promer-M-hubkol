@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\models;
+namespace mhubkol\models;
 
 use Yii;
 
@@ -462,7 +462,7 @@ class WechatUser extends \backend\models\BaseModel
 //                         'udc'=>'',
                     ),
 		        );
-        
+
     }
- 
+
 }

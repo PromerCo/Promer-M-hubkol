@@ -10,7 +10,7 @@
  *  public  unlock  释放锁
  *  private connect 连接
  */
-namespace apiminip\common\components;
+namespace mhubkol\common\components;
 use yii\web\Controller;
 class RedisLock extends Controller {
 

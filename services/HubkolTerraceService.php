@@ -1,9 +1,9 @@
 <?php
-namespace apiminip\services;
+namespace mhubkol\services;
 
-use apiminip\models\HubkolTerrace;
+use mhubkol\models\HubkolTerrace;
 
 class HubkolTerraceService extends HubkolTerrace{
 
-   
+
 }

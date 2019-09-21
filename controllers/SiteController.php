@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\controllers;
+namespace mhubkol\controllers;
 
 use Yii;
 use common\models\LoginForm;

@@ -1,14 +1,14 @@
 <?php
-namespace apiminip\modules\v1\controllers;
-use apiminip\common\helps\HttpCode;
-use apiminip\models\HubkolKol;
-use apiminip\models\HubkolPlatform;
-use apiminip\models\HubkolPull;
-use apiminip\models\HubkolPush;
-use apiminip\models\HubkolTags;
-use apiminip\modules\v1\models\WechatUser;
-use apiminip\services\ParamsValidateService;
-use apiminip\common\components\Redis;
+namespace mhubkol\modules\v1\controllers;
+use mhubkol\common\helps\HttpCode;
+use mhubkol\models\HubkolKol;
+use mhubkol\models\HubkolPlatform;
+use mhubkol\models\HubkolPull;
+use mhubkol\models\HubkolPush;
+use mhubkol\models\HubkolTags;
+use mhubkol\modules\v1\models\WechatUser;
+use mhubkol\services\ParamsValidateService;
+use mhubkol\common\components\Redis;
 
 /**
  * Site controller
@@ -54,7 +54,7 @@ class KolController extends BaseController
         if (empty($data['type']) || $data['type']==0){
             $result = HubkolKol::findBySql("SELECT wechat_user.avatar_url,hubkol_kol.tags,hubkol_kol.id,
 wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,
-hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol 
+hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
 LEFT JOIN wechat_user ON hubkol_kol.uid = wechat_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
 LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform")->asArray()->all();
@@ -73,7 +73,7 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform")->asArray
 //        from hubkol_push where find_in_set($tages_id,tags) and `platform` = $platform_id")->asArray()->all();
             $result = HubkolKol::findBySql("SELECT wechat_user.avatar_url,
 wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,hubkol_kol.tags,hubkol_kol.id,
-hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol 
+hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
 LEFT JOIN wechat_user ON hubkol_kol.uid = wechat_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
 LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id")->asArray()->all();
@@ -96,14 +96,14 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hub
                 return  HttpCode::renderJSON([],'资料不存在','416');
             break;
             case 1:
-                $data =    HubkolPush::findBySql("SELECT  hubkol_push.title,hubkol_platform.logo FROM  hubkol_push 
-LEFT JOIN  hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id 
+                $data =    HubkolPush::findBySql("SELECT  hubkol_push.title,hubkol_platform.logo FROM  hubkol_push
+LEFT JOIN  hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
 LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
 WHERE hubkol_hub.uid =$uid")->asArray()->all();
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
             case 2:
-            $data =    HubkolPull::findBySql("SELECT  hubkol_push.title,hubkol_platform.logo FROM  hubkol_pull LEFT JOIN  hubkol_kol ON hubkol_pull.kol_id = hubkol_kol.id 
+            $data =    HubkolPull::findBySql("SELECT  hubkol_push.title,hubkol_platform.logo FROM  hubkol_pull LEFT JOIN  hubkol_kol ON hubkol_pull.kol_id = hubkol_kol.id
 
 LEFT JOIN hubkol_push ON hubkol_pull.push_id = hubkol_push.id
 

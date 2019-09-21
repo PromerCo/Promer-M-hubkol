@@ -5,7 +5,7 @@
  * 1.0
  *
  */
-namespace apiminip\controllers;
+namespace mhubkol\controllers;
 use Yii;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\QueryParamAuth;

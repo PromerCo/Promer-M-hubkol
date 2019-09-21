@@ -1,9 +1,9 @@
 <?php
-namespace apiminip\services;
+namespace mhubkol\services;
 
-use apiminip\models\hubkolOrder;
+use mhubkol\models\hubkolOrder;
 
 class hubkolOrderService extends hubkolOrder{
 
-   
+
 }

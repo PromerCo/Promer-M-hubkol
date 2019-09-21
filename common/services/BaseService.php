@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\common\services;
+namespace mhubkol\common\services;
 
 
 class BaseService {

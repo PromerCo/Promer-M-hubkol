@@ -1,17 +1,17 @@
 <?php
 
-namespace apiminip\modules\v1\controllers;
-use apiminip\common\helps\HttpCode;
-use apiminip\common\services\TokenService;
-use apiminip\modules\v1\validate\RegexValidator;
-use apiminip\services\UserTokenService;
+namespace mhubkol\modules\v1\controllers;
+use mhubkol\common\helps\HttpCode;
+use mhubkol\common\services\TokenService;
+use mhubkol\modules\v1\validate\RegexValidator;
+use mhubkol\services\UserTokenService;
 use yii\web\Controller;
 /**
  * Site controller
  */
 class TokenController extends Controller
 {
-    public $modelClass = 'apiminip\models\WechatUser';
+    public $modelClass = 'mhubkol\models\WechatUser';
     public  $enableCsrfValidation=false;
 
     /**

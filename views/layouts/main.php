@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use apiminip\assets\AppAsset;
+use mhubkol\assets\AppAsset;
 use common\widgets\Alert;
 
 AppAsset::register($this);
@@ -29,7 +29,7 @@ AppAsset::register($this);
    
 
     <div class="container">
-      
+
         <?= $content ?>
     </div>
 </div>

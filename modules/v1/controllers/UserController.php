@@ -1,9 +1,9 @@
 <?php
-namespace apiminip\modules\v1\controllers;
-use apiminip\common\helps\HttpCode;
-use apiminip\modules\v1\models\WechatUser;
-use apiminip\services\ParamsValidateService;
-use apiminip\services\UserTokenService;
+namespace mhubkol\modules\v1\controllers;
+use mhubkol\common\helps\HttpCode;
+use mhubkol\modules\v1\models\WechatUser;
+use mhubkol\services\ParamsValidateService;
+use mhubkol\services\UserTokenService;
 use wxphone\WXBizDataCrypt;
 use yii\validators\RequiredValidator;
 use yii\web\RangeNotSatisfiableHttpException;
@@ -13,7 +13,7 @@ use yii\web\RangeNotSatisfiableHttpException;
  */
 class UserController extends BaseController
 {
-    public $modelClass = 'apiminip\models\WechatUser';
+    public $modelClass = 'mhubkol\models\WechatUser';
     /**
      * @inheritdoc
      */

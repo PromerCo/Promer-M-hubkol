@@ -1,7 +1,7 @@
 <?php
 
-namespace apiminip\common\components;
-use apiminip\common\services\BaseService;
+namespace mhubkol\common\components;
+use mhubkol\common\services\BaseService;
 use Yii;
 
 class HttpClient  extends  BaseService{
@@ -72,7 +72,7 @@ class HttpClient  extends  BaseService{
 
         // 执行输出
         $info = curl_exec($curl);
-        
+
         //log
         $_errno = curl_errno($curl);
         $_error = '';

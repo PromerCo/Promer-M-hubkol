@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\common\components;
+namespace mhubkol\common\components;
 
 use yii\web\Controller;
 
@@ -22,5 +22,3 @@ class BaseWebController extends Controller
 
 
 }
-
-

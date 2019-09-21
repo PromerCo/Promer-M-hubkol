@@ -1,7 +1,7 @@
 <?php
-namespace apiminip\services;
-use apiminip\common\helps\Common;
-use apiminip\models\HubkolPosition;
+namespace mhubkol\services;
+use mhubkol\common\helps\Common;
+use mhubkol\models\HubkolPosition;
 class HubkolPositionService extends HubkolPosition{
     /*
      * 职位的三级分类
@@ -11,5 +11,5 @@ class HubkolPositionService extends HubkolPosition{
         $result =  Common::getTree($data,'100000',0);
         return  $result;
     }
-   
+
 }

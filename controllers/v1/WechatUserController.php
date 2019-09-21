@@ -1,7 +1,7 @@
 <?php
 
-namespace apiminip\controllers\v1;
-use apiminip\models\WechatUser;
+namespace mhubkol\controllers\v1;
+use mhubkol\models\WechatUser;
 use Yii;
 use yii\data\Pagination;
 use yii\web\NotFoundHttpException;
@@ -38,9 +38,9 @@ class WechatUserController extends BaseController
             }
         }
         $pagination = new Pagination([
-            'totalCount' =>$query->count(), 
-            'pageSize' => '10', 
-            'pageParam'=>'page', 
+            'totalCount' =>$query->count(),
+            'pageSize' => '10',
+            'pageParam'=>'page',
             'pageSizeParam'=>'per-page']
         );
         $orderby = Yii::$app->request->get('orderby', '');
@@ -84,7 +84,7 @@ class WechatUserController extends BaseController
               if(empty($model->update_time) == true){
                   $model->update_time = 'CURRENT_TIMESTAMP';
               }
-        
+
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 return $this->asJson($msg);
@@ -128,7 +128,7 @@ class WechatUserController extends BaseController
             $msg = array('errno'=>2, 'msg'=>'数据出错');
             return $this->asJson($msg);
         }
-    
+
     }
 
     /**

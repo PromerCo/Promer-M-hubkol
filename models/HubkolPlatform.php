@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\models;
+namespace mhubkol\models;
 
 use Yii;
 
@@ -283,7 +283,7 @@ class HubkolPlatform extends \backend\models\BaseModel
 //                         'udc'=>'',
                     ),
 		        );
-        
+
     }
 
 
@@ -295,5 +295,5 @@ class HubkolPlatform extends \backend\models\BaseModel
     }
 
 
- 
+
 }

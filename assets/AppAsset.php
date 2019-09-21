@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace apiminip\assets;
+namespace mhubkol\assets;
 
 use yii\web\AssetBundle;
 

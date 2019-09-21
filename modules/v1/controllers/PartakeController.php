@@ -1,13 +1,13 @@
 <?php
-namespace apiminip\modules\v1\controllers;
-use apiminip\common\components\RedisLock;
-use apiminip\common\helps\Common;
-use apiminip\common\helps\HttpCode;
-use apiminip\models\HubkolHub;
-use apiminip\models\HubkolKol;
-use apiminip\models\HubkolPull;
-use apiminip\models\HubkolPush;
-use apiminip\modules\v1\models\WechatUser;
+namespace mhubkol\modules\v1\controllers;
+use mhubkol\common\components\RedisLock;
+use mhubkol\common\helps\Common;
+use mhubkol\common\helps\HttpCode;
+use mhubkol\models\HubkolHub;
+use mhubkol\models\HubkolKol;
+use mhubkol\models\HubkolPull;
+use mhubkol\models\HubkolPush;
+use mhubkol\modules\v1\models\WechatUser;
 
 /**
  * Site controller
@@ -72,7 +72,7 @@ class PartakeController extends BaseController
                         return  HttpCode::renderJSON([],'报名人数已达到','200');
                }
                 //用户是否报名
-              $enrolls =     HubkolPull::findBySql("SELECT hubkol_pull.is_enroll,hubkol_pull.id as pull_id FROM hubkol_push 
+              $enrolls =     HubkolPull::findBySql("SELECT hubkol_pull.is_enroll,hubkol_pull.id as pull_id FROM hubkol_push
 LEFT JOIN hubkol_pull ON hubkol_push.id = hubkol_pull.push_id
 LEFT JOIN hubkol_kol ON   hubkol_kol.id = hubkol_pull.kol_id
 WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->one();

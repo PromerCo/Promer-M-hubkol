@@ -1,7 +1,7 @@
 <?php
-namespace apiminip\services;
+namespace mhubkol\services;
 
-use apiminip\models\HubkolTags;
+use mhubkol\models\HubkolTags;
 
 class HubkolTagsService extends HubkolTags{
 

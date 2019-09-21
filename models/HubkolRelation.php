@@ -1,5 +1,5 @@
 <?php
-namespace apiminip\models;
+namespace mhubkol\models;
 
 use Yii;
 
@@ -180,7 +180,7 @@ class HubkolRelation extends \backend\models\BaseModel
 //                         'udc'=>'',
                     ),
 		        );
-        
+
     }
 
     public function getTages()
@@ -192,5 +192,5 @@ class HubkolRelation extends \backend\models\BaseModel
         return $this->hasMany(HubkolPlatform::className(), ['id' => 'platform_id']);
     }
 
- 
+
 }

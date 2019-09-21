@@ -1,9 +1,9 @@
 <?php
-namespace apiminip\services;
+namespace mhubkol\services;
 
-use apiminip\models\HubkolKol;
+use mhubkol\models\HubkolKol;
 
 class HubkolKolService extends HubkolKol{
 
-   
+
 }
