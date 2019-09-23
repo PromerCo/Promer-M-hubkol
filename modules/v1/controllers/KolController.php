@@ -96,24 +96,21 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hub
                 return  HttpCode::renderJSON([],'资料不存在','416');
             break;
             case 1:
-                $data =    HubkolPush::findBySql("SELECT  hubkol_push.title,hubkol_platform.logo FROM  hubkol_push
+                $data =    HubkolPush::findBySql("SELECT  hubkol_push.id,hubkol_push.title,hubkol_platform.logo,hubkol_push.create_date FROM  hubkol_push
 LEFT JOIN  hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
 LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
-WHERE hubkol_hub.uid =$uid")->asArray()->all();
+WHERE hubkol_hub.uid =$uid  ORDER BY hubkol_push.create_date desc")->asArray()->all();
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
             case 2:
-            $data =    HubkolPull::findBySql("SELECT  hubkol_push.title,hubkol_platform.logo FROM  hubkol_pull LEFT JOIN  hubkol_kol ON hubkol_pull.kol_id = hubkol_kol.id
-
+            $data =    HubkolPull::findBySql("SELECT  hubkol_push.id,hubkol_push.title,hubkol_platform.logo,hubkol_push.create_date FROM  hubkol_pull 
+LEFT JOIN  hubkol_kol ON hubkol_pull.kol_id = hubkol_kol.id
 LEFT JOIN hubkol_push ON hubkol_pull.push_id = hubkol_push.id
-
 LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
-
-WHERE hubkol_kol.uid =$uid  ")->asArray()->all();
+WHERE hubkol_kol.uid =$uid  ORDER BY hubkol_push.create_date desc")->asArray()->all();
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
         }
-
 
     }
    public function assoc_unique($arr, $key)

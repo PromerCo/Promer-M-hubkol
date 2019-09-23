@@ -94,7 +94,6 @@ class UserController extends BaseController
         $uid = $this->uid;
         $types =  WechatUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one();
         return  HttpCode::renderJSON($types['capacity'],'ok','201');
-
     }
 
 
