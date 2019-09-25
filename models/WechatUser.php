@@ -23,7 +23,7 @@ use Yii;
  * @property string $create_time
  * @property string $update_time
  */
-class WechatUser extends \backend\models\BaseModel
+class WechatUser extends \mhubkol\models\BaseModel
 {
     /**
      * @inheritdoc
