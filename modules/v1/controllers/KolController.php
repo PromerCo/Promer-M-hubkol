@@ -85,7 +85,7 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hub
     }
 
     /*
-     * 我报名的栏目
+     * 我报名(发布)的栏目
      */
     public function actionLame(){
         $uid =   $this->uid;   //获取用户ID

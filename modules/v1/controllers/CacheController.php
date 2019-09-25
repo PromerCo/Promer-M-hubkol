@@ -2,6 +2,7 @@
 
 namespace mhubkol\modules\v1\controllers;
 use mhubkol\common\helps\HttpCode;
+use mhubkol\models\HubkolVersion;
 use yii\web\Controller;
 
 /**
@@ -50,9 +51,22 @@ class CacheController extends Controller
     public function  actionMessage(){
         if ((\Yii::$app->request->isPost)) {
         // 查询当前 版本号
-            $valid = '1.1';
-            return  HttpCode::jsonObj(['valid'=>$valid],'ok',200);
+        $valid = '1.1';
+        //(版本号,状态)
+        $valids =  HubkolVersion::find()->select(['version','status'])->asArray()->one();
+        //粉丝数目
 
+
+
+
+
+
+
+
+
+
+
+            return  HttpCode::jsonObj(['valid'=>$valid],'ok',200);
 
         }else{
             return  HttpCode::jsonObj([],'请求方式出错','418');
