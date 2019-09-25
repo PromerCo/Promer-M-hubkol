@@ -22,7 +22,7 @@ use Yii;
  * @property string $create_date
  * @property string $update_time
  */
-class HubkolPush extends \backend\models\BaseModel
+class HubkolPush extends \mhubkol\models\BaseModel
 {
     /**
      * @inheritdoc
