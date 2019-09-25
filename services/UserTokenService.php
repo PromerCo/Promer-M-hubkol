@@ -31,7 +31,6 @@ class UserTokenService extends TokenService {
       else {
        $loginFail = array_key_exists('errcode', $wxResult);
 
-
        if ($loginFail) {
              return HttpCode::renderJSON('',$wxResult['errmsg'],$wxResult['errcode']);
         }
@@ -48,10 +47,12 @@ class UserTokenService extends TokenService {
         // 比如使用JWT并加入盐，如果不加入盐有一定的几率伪造令牌
         $openid = $wxResult['openid'];   //openid 和session_key
         $user =   WechatUser::findOne(['open_id'=>$openid]);
+
         if (!$user)
             // 借助微信的openid作为用户标识
             // 但在系统中的相关查询还是使用自己的uid
         {
+
             $wechat_user = new WechatUser();
             $wechat_user->open_id = $openid;
             $wechat_user->save();
@@ -60,6 +61,7 @@ class UserTokenService extends TokenService {
         else {
             $uid = $user->id;
         }
+
         $cachedValue = $this->prepareCachedValue($wxResult, $uid);
         $token = $this->saveToCache($cachedValue);
         return $token;

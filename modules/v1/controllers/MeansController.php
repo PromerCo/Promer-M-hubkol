@@ -150,22 +150,30 @@ class MeansController extends BaseController
     public function actionMiexhibit(){
           $uid =  $this->uid; //获取用户ID
           $types =  WechatUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one(); //查询类型
+
           return WechatUserService::Blocked($types['capacity'],$uid); //返回对应角色数据
     }
 
     public function actionBlocked(){
         if ((\Yii::$app->request->isPost)) {
-         $uid  = $this->uid;
-         $type = \Yii::$app->request->post('type');
-         $types = $type+1;
-         if (empty($types)){
-                return  HttpCode::renderJSON([],'参数不存在','412');
+         $uid  = $this->uid; //用户ID
+       try {
+         $type = \Yii::$app->request->post('type'); //类型
+         if (empty($type)){
+            return  HttpCode::renderJSON([],'参数不存在','412');
          }
          $transaction = \Yii::$app->db->beginTransaction(); //开启事务
-         $is_success =  WechatUser::updateAll(['capacity'=>$types,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$uid]);
+
+         $is_success =  WechatUser::updateAll(['capacity'=>$type,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$uid]);
+       }catch (\Exception $e) {
+           return  HttpCode::renderJSON([],$e->getMessage(),'412');
+       }
+
          if ($is_success){
+
              $transaction->commit();
-             return WechatUserService::Blocked($types,$uid); //返回对应角色数据
+
+            return WechatUserService::Blocked($type,$uid); //返回对应角色数据
          }else{
              return  HttpCode::renderJSON([],'更新失败','416');
          }

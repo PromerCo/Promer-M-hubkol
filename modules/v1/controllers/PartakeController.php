@@ -117,7 +117,7 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
                 echo '请稍后再试';
             }
        }else{
-           return  HttpCode::renderJSON([],'请求方式出错','418');
+           return  HttpCode::jsonObj([],'请求方式出错','418');
       }
     }
 
@@ -182,6 +182,43 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
             $transaction->commit();
             return  HttpCode::renderJSON([],'ok','201');
         }
+    }
+
+    /*
+     * 收藏
+     */
+    public function actionCollect(){
+        if ((\Yii::$app->request->isPost)) {
+            $uid = $this->uid;
+            $collect = \Yii::$app->request->post('collect');
+            $push_id = \Yii::$app->request->post('push_id');
+
+            $kol_id = HubkolKol::find()->where(['uid' => $uid])->select(['id'])->asArray()->one();
+
+            if (empty($kol_id['id'])) {
+                return HttpCode::jsonObj([], '资料不全', '416');
+            }
+            $transaction = \Yii::$app->db->beginTransaction();
+            /*
+             * 更新收藏
+             */
+            $is_update = HubkolPull::updateAll(['is_collect' => $collect, 'update_time' => date('Y-m-d H:i:s', time())], [
+                'push_id' => $push_id,
+                'kol_id'=>$kol_id['id']
+            ]);
+            if ($is_update){
+                $transaction->commit();
+                return  HttpCode::jsonObj($collect,'OK','201');
+            }else{
+                return  HttpCode::jsonObj([],'error','416');
+            }
+
+
+
+        }else{
+            return  HttpCode::jsonObj([],'请求方式出错','418');
+        }
+
     }
 
 
