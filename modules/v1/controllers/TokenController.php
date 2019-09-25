@@ -50,11 +50,11 @@ class TokenController extends Controller
 
         if ((\Yii::$app->request->isPost)) {
              $token = \Yii::$app->request->post('token');
-          if(!$token){
+        if(!$token){
                 return  HttpCode::renderJSON([],'Token不存在','412');
-          }
-           $valid = TokenService::verifyToken($token);
-            return  HttpCode::renderJSON(['valid'=>$valid],'ok',200);
+        }
+        $valid = TokenService::verifyToken($token);
+        return  HttpCode::renderJSON(['valid'=>$valid],'ok',200);
         }else{
             return  HttpCode::renderJSON([],'请求方式出错','418');
         }
