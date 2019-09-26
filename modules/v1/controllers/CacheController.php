@@ -2,6 +2,12 @@
 
 namespace mhubkol\modules\v1\controllers;
 use mhubkol\common\helps\HttpCode;
+
+use mhubkol\models\HubkolFollow;
+use mhubkol\models\HubkolPlatform;
+use mhubkol\models\HubkolPosition;
+use mhubkol\models\HubkolTags;
+
 use mhubkol\models\HubkolVersion;
 use yii\web\Controller;
 
@@ -33,8 +39,9 @@ class CacheController extends Controller
     {
         if ((\Yii::$app->request->isPost)) {
             $version =  \Yii::$app->request->post('version');
-            $valid = '1.1';
-            if ($version != $valid){
+
+            $valid = HubkolVersion::find()->select(['version'])->asArray()->one();
+            if ($version != $valid['version']){
                 return  HttpCode::jsonObj(1,'ok',200);  //更新
             }else{
                 return  HttpCode::jsonObj(0,'ok',200); //未更新
@@ -53,23 +60,39 @@ class CacheController extends Controller
         // 查询当前 版本号
         $valid = '1.1';
         //(版本号,状态)
-        $valids =  HubkolVersion::find()->select(['version','status'])->asArray()->one();
+        $valids = HubkolVersion::find()->select(['version','status'])->asArray()->one();
         //粉丝数目
+        $fans = HubkolFollow::find()->select(['id','title'])->asArray()->all();
+        //标签
+        $tages    =  HubkolTags::find()->select(['id','title'])->asArray()->all();
+        //职位
+        $position = HubkolPosition::find()->select(['id','code','name','parent_code'])->asArray()->all();
+        //领域
+        $ploform  = HubkolPlatform::find()->with('retion')->select(['id','title','logo'])->asArray()->all();
+
+        foreach ($ploform as $key =>$value){
+                foreach ($value['retion'] as $k =>$v){
+                    $ploform[$key]['retion'][$k]   = HubkolTags::find()->where(['id'=>$v['tags_id']])->select(['title','id'])->asArray()->one();
+                }
+        }
 
 
+        $data['valids']  =   $valids;
+
+        $data['tages'] =   $tages;
+
+        $data['position'] =   $position;
+
+        $data['ploform'] =   $ploform;  //平台
 
 
+        $data['fans'] = $fans;
 
 
-
-
-
-
-
-            return  HttpCode::jsonObj(['valid'=>$valid],'ok',200);
+        return  HttpCode::renderJSON($data,'ok',200);
 
         }else{
-            return  HttpCode::jsonObj([],'请求方式出错','418');
+            return  HttpCode::renderJSON([],'请求方式出错','418');
         }
 
     }

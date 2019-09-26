@@ -13,7 +13,7 @@ use Yii;
  * @property string $create_time
  * @property string $update_time
  */
-class HubkolVersion extends \mhubkol\models\BaseModel
+class HubkolVersion extends BaseModel
 {
     /**
      * @inheritdoc
