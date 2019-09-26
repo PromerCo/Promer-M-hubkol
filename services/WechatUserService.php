@@ -42,7 +42,6 @@ WHERE hubkol_kol.uid = $uid")->asArray()->one();
                     return  HttpCode::renderJSON($hub,'ok','201');
                 }else{
                     //新增一条数据
-
                     $hub['type'] = 2;
                     $hub['status'] = 0;
                     return  HttpCode::renderJSON($hub,'null','201');
