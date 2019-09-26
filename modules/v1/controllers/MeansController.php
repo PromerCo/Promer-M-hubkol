@@ -150,7 +150,6 @@ class MeansController extends BaseController
     public function actionMiexhibit(){
           $uid =  $this->uid; //获取用户ID
           $types =  WechatUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one(); //查询类型
-
           return WechatUserService::Blocked($types['capacity'],$uid); //返回对应角色数据
     }
 

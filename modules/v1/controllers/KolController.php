@@ -51,13 +51,16 @@ class KolController extends BaseController
      */
     public function  actionSpread(){
         $data = \Yii::$app->request->post();
+
+        $start_page = $data['start_page']??0;
+
         if (empty($data['type']) || $data['type']==0){
             $result = HubkolKol::findBySql("SELECT wechat_user.avatar_url,hubkol_kol.tags,hubkol_kol.id,
 wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,
 hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
 LEFT JOIN wechat_user ON hubkol_kol.uid = wechat_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
-LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform")->asArray()->all();
+LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform LIMIT $start_page,5")->asArray()->all();
         }else{
             $pvs = new ParamsValidateService();
             $valid = $pvs->validate($data, [
@@ -67,10 +70,7 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform")->asArray
                 return  HttpCode::jsonObj([],$pvs->getErrorSummary(true),'416');
             }
             $platform_id = $data['platform_id'];
- //       $tages_id =    $data['tages_id'];
-//        $result = HubkolPush::findBySql("select `hub_id`,`id`,`platform`,`follow_level`,`expire_time`,
-//        describe`,`type`,`convene`,`bystander`,`bystander_number`,`enroll`,`enroll_number`
-//        from hubkol_push where find_in_set($tages_id,tags) and `platform` = $platform_id")->asArray()->all();
+
             $result = HubkolKol::findBySql("SELECT wechat_user.avatar_url,
 wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,hubkol_kol.tags,hubkol_kol.id,
 hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
@@ -103,11 +103,12 @@ WHERE hubkol_hub.uid =$uid  ORDER BY hubkol_push.create_date desc")->asArray()->
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
             case 2:
-            $data =    HubkolPull::findBySql("SELECT  hubkol_push.id,hubkol_push.title,hubkol_platform.logo,hubkol_push.create_date FROM  hubkol_pull 
+            $data =    HubkolPull::findBySql("SELECT  hubkol_push.id,hubkol_push.title,hubkol_platform.logo,hubkol_pull.is_enroll,hubkol_push.create_date FROM  hubkol_pull 
 LEFT JOIN  hubkol_kol ON hubkol_pull.kol_id = hubkol_kol.id
 LEFT JOIN hubkol_push ON hubkol_pull.push_id = hubkol_push.id
 LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
-WHERE hubkol_kol.uid =$uid  ORDER BY hubkol_push.create_date desc")->asArray()->all();
+WHERE hubkol_kol.uid =$uid  AND hubkol_pull.is_enroll = 1
+ORDER BY hubkol_push.create_date desc")->asArray()->all();
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
         }
