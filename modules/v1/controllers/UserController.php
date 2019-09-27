@@ -1,7 +1,7 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
 use mhubkol\common\helps\HttpCode;
-use mhubkol\modules\v1\models\WechatUser;
+use mhubkol\models\HubkolUser;
 use mhubkol\services\ParamsValidateService;
 use mhubkol\services\UserTokenService;
 use wxphone\WXBizDataCrypt;
@@ -13,7 +13,7 @@ use yii\web\RangeNotSatisfiableHttpException;
  */
 class UserController extends BaseController
 {
-    public $modelClass = 'mhubkol\models\WechatUser';
+    public $modelClass = 'mhubkol\models\HubkolUser';
     /**
      * @inheritdoc
      */
@@ -72,7 +72,7 @@ class UserController extends BaseController
             if (!$valid) {
                 return  HttpCode::renderJSON([],$pvs->getErrorSummary(true),'416');
             }
-            $wechat_user = new WechatUser();
+            $wechat_user = new HubkolUser();
             try {
                 $transaction = \Yii::$app->db->beginTransaction();
                 $wechat_user->updateAll($data,['id'=>$user_id]);
@@ -92,7 +92,7 @@ class UserController extends BaseController
 
     public function actionRole(){
         $uid = $this->uid;
-        $types =  WechatUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one();
+        $types =  HubkolUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one();
         return  HttpCode::jsonObj($types['capacity'],'ok','201');
     }
 

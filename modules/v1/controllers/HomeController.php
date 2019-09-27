@@ -34,11 +34,11 @@ class HomeController extends Controller
         $end_page   = \Yii::$app->request->post('end_page')??5;
 
          $data =  HubkolPush::findBySql("SELECT hubkol_push.id,hubkol_push.tags,hubkol_hub.brand,hubkol_push.enroll,hubkol_push.title as push_title,
-hubkol_push.convene,hubkol_push.bystander_number,hubkol_push.create_date,hubkol_follow.title,wechat_user.avatar_url,hubkol_platform.logo,
+hubkol_push.convene,hubkol_push.bystander_number,hubkol_push.create_date,hubkol_follow.title,hubkol_user.avatar_url,hubkol_platform.logo,
 hubkol_platform.id as platform_id FROM hubkol_push  LEFT JOIN hubkol_follow ON hubkol_push.follow_level = hubkol_follow.id
 LEFT JOIN hubkol_platform ON hubkol_push.platform = hubkol_platform.id
 LEFT JOIN hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
-LEFT JOIN wechat_user ON wechat_user.id = hubkol_hub.uid
+LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_hub.uid
 GROUP BY hubkol_push.id ORDER by hubkol_push.create_date DESC LIMIT $start_page,$end_page")->asArray()->all();
 
   foreach ($data as $key=>$value){
@@ -54,13 +54,13 @@ GROUP BY hubkol_push.id ORDER by hubkol_push.create_date DESC LIMIT $start_page,
     public function actionDetails(){
         $phsh_id = \Yii::$app->request->post('push_id');
         $data = HubkolPush::findBySql("SELECT hubkol_push.id,hubkol_hub.city,hubkol_push.title as push_title,hubkol_platform.title,
-        hubkol_platform.logo,hubkol_push.expire_time,hubkol_push.create_date,hubkol_hub.brand,wechat_user.avatar_url,wechat_user.nick_name,
+        hubkol_platform.logo,hubkol_push.expire_time,hubkol_push.create_date,hubkol_hub.brand,hubkol_user.avatar_url,hubkol_user.nick_name,
         hubkol_follow.title,hubkol_push.enroll,hubkol_push.describe,hubkol_push.bystander_number,hubkol_push.tags,hubkol_pull.is_collect,
         hubkol_pull.is_enroll,hubkol_push.convene,hubkol_push.enroll_number 
         FROM hubkol_push  
         LEFT JOIN hubkol_platform ON hubkol_push.platform = hubkol_platform.id
         LEFT JOIN hubkol_hub ON  hubkol_push.hub_id = hubkol_hub.id 
-        LEFT JOIN wechat_user ON wechat_user.id = hubkol_hub.uid
+        LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_hub.uid
         LEFT JOIN hubkol_follow ON hubkol_follow.id = hubkol_push.follow_level
         LEFT JOIN hubkol_pull   ON hubkol_pull.push_id = hubkol_push.id
         WHERE  hubkol_push.id = $phsh_id")->asArray()->one();

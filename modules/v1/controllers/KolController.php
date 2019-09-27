@@ -6,6 +6,7 @@ use mhubkol\models\HubkolPlatform;
 use mhubkol\models\HubkolPull;
 use mhubkol\models\HubkolPush;
 use mhubkol\models\HubkolTags;
+use mhubkol\models\HubkolUser;
 use mhubkol\modules\v1\models\WechatUser;
 use mhubkol\services\ParamsValidateService;
 use mhubkol\common\components\Redis;
@@ -56,10 +57,10 @@ class KolController extends BaseController
 
 
         if (empty($data['type']) || $data['type']==0){
-            $result = HubkolKol::findBySql("SELECT wechat_user.avatar_url,hubkol_kol.tags,hubkol_kol.id,
-wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,
+            $result = HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.tags,hubkol_kol.id,
+hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,
 hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
-LEFT JOIN wechat_user ON hubkol_kol.uid = wechat_user.id
+LEFT JOIN hubkol_user ON hubkol_kol.uid = hubkol_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
 LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform LIMIT $start_page,5")->asArray()->all();
         }else{
@@ -72,10 +73,10 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform LIMIT $sta
             }
             $platform_id = $data['platform_id'];
 
-            $result = HubkolKol::findBySql("SELECT wechat_user.avatar_url,
-wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,hubkol_kol.tags,hubkol_kol.id,
+            $result = HubkolKol::findBySql("SELECT hubkol_user.avatar_url,
+hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,hubkol_kol.tags,hubkol_kol.id,
 hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
-LEFT JOIN wechat_user ON hubkol_kol.uid = wechat_user.id
+LEFT JOIN hubkol_user ON hubkol_kol.uid = hubkol_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
 LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id LIMIT $start_page,5")->asArray()->all();
         }
@@ -91,7 +92,7 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hub
     public function actionLame(){
         $uid =   $this->uid;   //获取用户ID
         //查看用户角色
-        $capacity =   WechatUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();
+        $capacity =   HubkolUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();
         switch ($capacity['capacity']){
             case 0:
                 return  HttpCode::renderJSON([],'资料不存在','416');
