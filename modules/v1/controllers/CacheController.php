@@ -58,7 +58,7 @@ class CacheController extends Controller
     public function  actionMessage(){
         if ((\Yii::$app->request->isPost)) {
         // 查询当前 版本号
-        $valid = '1.1';
+
         //(版本号,状态)
         $valids = HubkolVersion::find()->select(['version','status'])->asArray()->one();
         //粉丝数目

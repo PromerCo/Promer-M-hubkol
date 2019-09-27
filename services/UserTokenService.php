@@ -83,6 +83,7 @@ class UserTokenService extends TokenService {
         $result =  \Yii::$app->cache->set($key,$value,$expire_in);  //设置 过期时间 缓存
         if (!$result){
             //抛出异常   缓存失败
+            throw new  BadRequestHttpException('重新获取缓存');
         }
         return $key;
     }
