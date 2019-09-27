@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2019/9/4 0004
- * Time: 15:15
- */
 namespace mhubkol\common\helps;
 
 use yii\web\Controller;

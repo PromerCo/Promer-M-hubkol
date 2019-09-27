@@ -1,13 +1,14 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
+
 use mhubkol\common\components\RedisLock;
 use mhubkol\common\helps\Common;
 use mhubkol\common\helps\HttpCode;
-use mhubkol\models\HubkolHub;
-use mhubkol\models\HubkolKol;
-use mhubkol\models\HubkolPull;
-use mhubkol\models\HubkolPush;
-use mhubkol\modules\v1\models\WechatUser;
+use mhubkol\modules\v1\models\HubkolUser;
+use mhubkol\modules\v1\models\HubkolHub;
+use mhubkol\modules\v1\models\HubkolKol;
+use mhubkol\modules\v1\models\HubkolPull;
+use mhubkol\modules\v1\models\HubkolPush;
 
 /**
  * Site controller
@@ -55,7 +56,7 @@ class PartakeController extends BaseController
                }
               //假如用户填写资料
               $is_pull =   HubkolPull::find()->where(['push_id'=>$push_id,'kol_id'=>$means['id']])->asArray()->count();
-               $material =  WechatUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();  //身份标识（0 未填写资料 1 HUB 2KOL
+               $material =  HubkolUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();  //身份标识（0 未填写资料 1 HUB 2KOL
                if ($material['capacity'] != 2){
                    return  HttpCode::renderJSON([],'您不是KOL身份','412');
                }
@@ -81,7 +82,7 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
                   RedisLock::unlock($key);  //清空KEY
                   return  HttpCode::renderJSON([],'您已经报名','200');
               }else{
-                  $user_info = WechatUser::find()->where(['id'=>$this->uid])->select(['avatar_url','nick_name','gender','phone_number'])->asArray()->one();
+                  $user_info = HubkolUser::find()->where(['id'=>$this->uid])->select(['avatar_url','nick_name','gender','phone_number'])->asArray()->one();
                   $enroll_add['avatar_url'] =  $user_info['avatar_url'];
                   $enroll_add['nick_name'] =  $user_info['nick_name'];
                   $enroll_add['gender'] =  $user_info['gender'];

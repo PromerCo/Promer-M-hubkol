@@ -1,11 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2019/9/5 0005
- * Time: 11:50
- */
 namespace mhubkol\modules\v1\validate;
+
 use yii\validators\Validator;
 use yii\web\MethodNotAllowedHttpException;
 

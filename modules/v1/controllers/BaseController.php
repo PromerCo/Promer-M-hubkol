@@ -1,5 +1,6 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
+
 use mhubkol\common\services\TokenService;
 use yii\base\InvalidCallException;
 use yii\redis\Connection;

@@ -1,11 +1,11 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
 use mhubkol\common\helps\HttpCode;
-use mhubkol\models\HubkolHub;
-use mhubkol\models\HubkolKol;
-use mhubkol\models\WechatUser;
-use mhubkol\services\ParamsValidateService;
-use mhubkol\services\WechatUserService;
+use mhubkol\modules\v1\models\HubkolHub;
+use mhubkol\modules\v1\models\HubkolKol;
+use mhubkol\modules\v1\models\HubkolUser;
+use mhubkol\modules\v1\services\ParamsValidateService;
+use mhubkol\modules\v1\services\HubkolUserService;
 
 /**
  * Site controller
@@ -73,7 +73,7 @@ class MeansController extends BaseController
                             if (!$Hub->save() ) {
                                 return  HttpCode::renderJSON([],$Hub->errors,'412');
                             }else{
-                                WechatUser::updateAll([
+                                HubkolUser::updateAll([
                                     'update_time'=> date('Y-m-d H:i:s',time()),
                                     'capacity'=>1,
                                 ],['id'=>$this->uid]);
@@ -117,7 +117,7 @@ class MeansController extends BaseController
                             if (!$Kub->save()) {
                                 return  HttpCode::renderJSON([],$Kub->errors,'412');
                             }else{
-                                WechatUser::updateAll([
+                                HubkolUser::updateAll([
                                     'update_time'=> date('Y-m-d H:i:s',time()),
                                     'capacity'=>2,
                                 ],['id'=>$this->uid]);
@@ -149,8 +149,8 @@ class MeansController extends BaseController
     */
     public function actionMiexhibit(){
           $uid =  $this->uid; //获取用户ID
-          $types =  WechatUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one(); //查询类型
-          return WechatUserService::Blocked($types['capacity'],$uid); //返回对应角色数据
+          $types =  HubkolUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one(); //查询类型
+          return HubkolUserService::Blocked($types['capacity'],$uid); //返回对应角色数据
     }
 
     public function actionBlocked(){
@@ -163,7 +163,7 @@ class MeansController extends BaseController
          }
          $transaction = \Yii::$app->db->beginTransaction(); //开启事务
 
-         $is_success =  WechatUser::updateAll(['capacity'=>$type,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$uid]);
+         $is_success =  HubkolUser::updateAll(['capacity'=>$type,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$uid]);
        }catch (\Exception $e) {
            return  HttpCode::renderJSON([],$e->getMessage(),'412');
        }
@@ -172,7 +172,7 @@ class MeansController extends BaseController
 
              $transaction->commit();
 
-            return WechatUserService::Blocked($type,$uid); //返回对应角色数据
+            return HubkolUserService::Blocked($type,$uid); //返回对应角色数据
          }else{
              return  HttpCode::renderJSON([],'更新失败','416');
          }

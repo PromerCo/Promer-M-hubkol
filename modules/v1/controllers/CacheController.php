@@ -1,14 +1,12 @@
 <?php
-
 namespace mhubkol\modules\v1\controllers;
+
 use mhubkol\common\helps\HttpCode;
-
-use mhubkol\models\HubkolFollow;
-use mhubkol\models\HubkolPlatform;
-use mhubkol\models\HubkolPosition;
-use mhubkol\models\HubkolTags;
-
-use mhubkol\models\HubkolVersion;
+use mhubkol\modules\v1\models\HubkolFollow;
+use mhubkol\modules\v1\models\HubkolPlatform;
+use mhubkol\modules\v1\models\HubkolPosition;
+use mhubkol\modules\v1\models\HubkolTags;
+use mhubkol\modules\v1\models\HubkolVersion;
 use yii\web\Controller;
 
 /**
@@ -93,9 +91,4 @@ class CacheController extends Controller
         }
 
     }
-
-
-
-
-
 }

@@ -1,11 +1,10 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
 use mhubkol\common\helps\HttpCode;
-use mhubkol\models\HubkolUser;
-use mhubkol\services\ParamsValidateService;
-use mhubkol\services\UserTokenService;
+use mhubkol\modules\v1\models\HubkolUser;
+use mhubkol\modules\v1\services\ParamsValidateService;
+use mhubkol\modules\v1\services\UserTokenService;
 use wxphone\WXBizDataCrypt;
-use yii\validators\RequiredValidator;
 use yii\web\RangeNotSatisfiableHttpException;
 
 /**

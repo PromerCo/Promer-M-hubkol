@@ -1,11 +1,11 @@
 <?php
-
 namespace mhubkol\modules\v1\controllers;
+
 use mhubkol\common\helps\HttpCode;
 use mhubkol\common\services\TokenService;
-use mhubkol\modules\v1\validate\RegexValidator;
-use mhubkol\services\UserTokenService;
+use mhubkol\modules\v1\services\UserTokenService;
 use yii\web\Controller;
+
 /**
  * Site controller
  */

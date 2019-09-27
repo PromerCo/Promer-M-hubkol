@@ -1,9 +1,10 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
+
 use mhubkol\common\helps\Common;
 use mhubkol\common\helps\HttpCode;
-use mhubkol\models\HubkolPush;
-use mhubkol\models\HubkolTags;
+use mhubkol\modules\v1\models\HubkolPush;
+use mhubkol\modules\v1\models\HubkolTags;
 use yii\web\Controller;
 
 /**

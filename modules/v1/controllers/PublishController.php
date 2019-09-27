@@ -1,11 +1,11 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
+
 use mhubkol\common\helps\HttpCode;
-use mhubkol\models\HubkolHub;
-use mhubkol\models\HubkolKol;
-use mhubkol\models\HubkolPush;
-use mhubkol\models\WechatUser;
-use mhubkol\services\ParamsValidateService;
+use mhubkol\modules\v1\models\HubkolUser;
+use mhubkol\modules\v1\models\HubkolHub;
+use mhubkol\modules\v1\models\HubkolPush;
+
 /**
  * Site controller
  */
@@ -36,7 +36,7 @@ class PublishController extends BaseController
             /*
              * 查看是否填写资料
              */
-           $info =   WechatUser::find()->where(['id'=>$this->uid])->select(['nick_name','avatar_url'])->asArray()->one();
+           $info =   HubkolUser::find()->where(['id'=>$this->uid])->select(['nick_name','avatar_url'])->asArray()->one();
            if (empty($info['nick_name']) || empty($info['avatar_url'])){
                return  HttpCode::renderJSON([],'请先完善资料','412');
            }
