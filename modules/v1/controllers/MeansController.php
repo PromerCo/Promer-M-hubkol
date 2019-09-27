@@ -59,8 +59,8 @@ class MeansController extends BaseController
                         [['create_date', 'update_time'], 'safe'],
                         [['wechat', 'email', 'industry', 'company', 'brand', 'city'], 'string', 'max' => 30],
                         [['phone'],'match','pattern'=>'/^[1][358][0-9]{9}$/'],
-                        [['position_code'], 'string', 'max' => 30],
-                        [['profile'], 'string', 'max' => 100]
+//                        [['position_code'], 'string', 'max' => 30],
+//                        [['profile'], 'string', 'max' => 100]
                     ]);
                     if (!$valid) {
                         return  HttpCode::renderJSON([],$params->getErrors(),'412');
@@ -99,12 +99,10 @@ class MeansController extends BaseController
                 case 2:
                     $Kub = new HubkolKol();
                     $valid = $params->validate(\Yii::$app->request->post(), [
-                        [['wechat', 'phone', 'city','platform','tags','account','follow_level','email','city_code','province','province_code'], 'required'],
-                        ['email', 'email'],
-                        [['profile'], 'string', 'max' => 100],
+                        [['wechat', 'phone', 'city','platform','tags','account','follow_level','city_code','province','province_code'], 'required'],
                         [['follow_level'], 'string', 'max' => 6],
                         [['phone'],'match','pattern'=>'/^[1][358][0-9]{9}$/'],
-                        [['content'], 'string'],
+//                        [['content'], 'string'],
                     ]);
                     if (!$valid) {
                         return  HttpCode::renderJSON([],$params->getErrors(),'412');
