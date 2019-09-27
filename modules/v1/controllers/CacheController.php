@@ -76,7 +76,6 @@ class CacheController extends Controller
                 }
         }
 
-
         $data['valids']  =   $valids;
 
         $data['tages'] =   $tages;
@@ -85,9 +84,7 @@ class CacheController extends Controller
 
         $data['ploform'] =   $ploform;  //平台
 
-
         $data['fans'] = $fans;
-
 
         return  HttpCode::renderJSON($data,'ok',200);
 

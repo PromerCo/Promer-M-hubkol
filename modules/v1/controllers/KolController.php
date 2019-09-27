@@ -54,6 +54,7 @@ class KolController extends BaseController
 
         $start_page = $data['start_page']??0;
 
+
         if (empty($data['type']) || $data['type']==0){
             $result = HubkolKol::findBySql("SELECT wechat_user.avatar_url,hubkol_kol.tags,hubkol_kol.id,
 wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,
@@ -76,7 +77,7 @@ wechat_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol
 hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
 LEFT JOIN wechat_user ON hubkol_kol.uid = wechat_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
-LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id")->asArray()->all();
+LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id LIMIT $start_page,5")->asArray()->all();
         }
         foreach ($result as $key=>$value){
             $result[$key]['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();

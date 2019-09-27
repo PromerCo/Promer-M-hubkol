@@ -93,7 +93,7 @@ class UserController extends BaseController
     public function actionRole(){
         $uid = $this->uid;
         $types =  WechatUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one();
-        return  HttpCode::renderJSON($types['capacity'],'ok','201');
+        return  HttpCode::jsonObj($types['capacity'],'ok','201');
     }
 
 
