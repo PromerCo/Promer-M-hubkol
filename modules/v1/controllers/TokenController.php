@@ -11,7 +11,7 @@ use yii\web\Controller;
  */
 class TokenController extends Controller
 {
-    public $modelClass = 'mhubkol\models\WechatUser';
+    public $modelClass = 'mhubkol\models\HubkolUser';
     public  $enableCsrfValidation=false;
 
     /**
