@@ -37,12 +37,12 @@ class HubkolKol extends BaseModel
     {
         return [
             [['uid'], 'integer'],
-            [['wechat', 'phone', 'city', 'platform', 'tags', 'account', 'follow_level','email'], 'required'],
+            [['wechat', 'phone', 'city', 'platform', 'tags', 'account', 'follow_level'], 'required'],
             [['create_date', 'update_time'], 'safe'],
             [['wechat', 'email', 'mcn_organization', 'mcn_company', 'city', 'platform', 'tags', 'account'], 'string', 'max' => 30],
             [['phone'], 'string', 'max' => 11],
             [['follow_level'], 'string', 'max' => 6],
-            ['email','email'],
+//            ['email','email'],
             [['profile'], 'string', 'max' => 100]
         ];
     }

@@ -28,8 +28,7 @@ class UserTokenService extends TokenService {
 
       if (empty($wxResult)) {
           return HttpCode::renderJSON('','获取session_key及openID时异常，微信内部错误','416');
-       }
-      else {
+       } else {
        $loginFail = array_key_exists('errcode', $wxResult);
 
        if ($loginFail) {

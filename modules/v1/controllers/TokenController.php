@@ -53,6 +53,7 @@ class TokenController extends Controller
         if(!$token){
                 return  HttpCode::renderJSON([],'Token不存在','412');
         }
+
         $valid = TokenService::verifyToken($token);
         return  HttpCode::renderJSON(['valid'=>$valid],'ok',200);
         }else{
