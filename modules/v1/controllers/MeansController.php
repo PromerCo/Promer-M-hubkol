@@ -149,7 +149,7 @@ class MeansController extends BaseController
     */
     public function actionMiexhibit(){
           $uid =  $this->uid; //获取用户ID
-          $types =  HubkolUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one(); //查询类型
+          $types =  HubkolUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one(); //查询类型(状态)
           return HubkolUserService::Blocked($types['capacity'],$uid); //返回对应角色数据
     }
 

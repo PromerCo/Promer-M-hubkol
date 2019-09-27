@@ -11,6 +11,8 @@ class HubkolUserService extends HubkolUser {
 
     public static function Blocked($type,$uid){
 
+
+
         switch ($type){
 
 
@@ -25,7 +27,7 @@ class HubkolUserService extends HubkolUser {
                     return  HttpCode::renderJSON($hub,'ok','201');
                 }else{
                     $hub['status'] = 0;
-                    $hub['type'] = 2;
+                    $hub['type'] = 1;
                     return  HttpCode::renderJSON($hub,'null','201');
                 }
 
