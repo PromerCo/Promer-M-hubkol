@@ -1,6 +1,6 @@
 <?php
 namespace mhubkol\services;
-use mhubkol\models\log\HubkolLog;
+use mhubkol\models\HubkolLog;
 
 class HubkolLogService extends HubkolLog{
 
