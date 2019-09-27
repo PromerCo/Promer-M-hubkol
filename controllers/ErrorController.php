@@ -1,6 +1,6 @@
 <?php
 namespace mhubkol\controllers;
-use mhubkol\common\services\applog\ApplogService;
+use mhubkol\common\services\ApplogService;
 use Yii;
 use yii\log\FileTarget;
 use yii\web\Controller;
