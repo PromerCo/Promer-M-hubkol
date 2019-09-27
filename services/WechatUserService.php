@@ -30,7 +30,7 @@ class WechatUserService extends WechatUser{
                 break;
             //KOL
             case 2:
-                $hub = HubkolKol::findBySql("SELECT hubkol_kol.wechat,hubkol_kol.email,hubkol_kol.mcn_organization,hubkol_kol.mcn_company,
+                $hub = HubkolKol::findBySql("SELECT hubkol_kol.wechat,hubkol_kol.email,hubkol_kol.mcn_organization,hubkol_kol.mcn_company,hubkol_kol.phone,
 hubkol_kol.city,hubkol_platform.title,hubkol_kol.platform,hubkol_kol.tags,hubkol_kol.account,hubkol_kol.follow_level,hubkol_kol.province_code,
 hubkol_kol.city_code,hubkol_kol.province,hubkol_follow.title as fs_title FROM hubkol_kol LEFT JOIN hubkol_platform  ON hubkol_kol.platform = hubkol_platform.id
 LEFT JOIN hubkol_follow ON hubkol_follow.id = hubkol_kol.follow_level
@@ -42,7 +42,6 @@ WHERE hubkol_kol.uid = $uid")->asArray()->one();
                     return  HttpCode::renderJSON($hub,'ok','201');
                 }else{
                     //新增一条数据
-
                     $hub['type'] = 2;
                     $hub['status'] = 0;
                     return  HttpCode::renderJSON($hub,'null','201');

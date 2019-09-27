@@ -1,17 +1,13 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
+use common\components\Aliyunoss;
 use yii\web\Controller;
-use Yii;
-
 /**
  * Site controller
  */
-class SiteController extends Controller
+class AliossController extends Controller
 {
-    public $modelClass = 'mhubkol\modules\v1\models\guide';
-    /**
-     * @inheritdoc  验证码
-     */
+    public  $enableCsrfValidation=false;
     public function actions()
     {
         return [
@@ -25,21 +21,10 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $getParams  =  Yii::$app->request;
-        print_r($getParams->get('id'));
-    }
+    public function  actionIndex(){
 
-    public function actionText()
-    {
-
-      echo '测试';
+           $al = new Aliyunoss();
+        $al->test();
     }
 
 
