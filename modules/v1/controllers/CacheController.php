@@ -1,6 +1,7 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
 
+use mhubkol\common\components\Redis;
 use mhubkol\common\helps\HttpCode;
 use mhubkol\modules\v1\models\HubkolFollow;
 use mhubkol\modules\v1\models\HubkolPlatform;
@@ -57,7 +58,6 @@ class CacheController extends Controller
     public function  actionMessage(){
         if ((\Yii::$app->request->isPost)) {
         // 查询当前 版本号
-
         //(版本号,状态)
         $valids = HubkolVersion::find()->select(['version','status'])->asArray()->one();
         //粉丝数目
@@ -75,17 +75,21 @@ class CacheController extends Controller
                 }
         }
 
-        $data['valids']  =   $valids;
+            $data['valids']  =   $valids;
+            $data['tages'] =   $tages;
+            $data['position'] =   $position;
+            $data['ploform'] =   $ploform;  //平台
+            $data['fans'] = $fans;
+        /*
+         * Redis
+         */
+            $list =  Redis::get('list');
+            if (!$list){
+                $list = $data;
+                Redis::set('list',$list);
+            }
 
-        $data['tages'] =   $tages;
-
-        $data['position'] =   $position;
-
-        $data['ploform'] =   $ploform;  //平台
-
-        $data['fans'] = $fans;
-
-        return  HttpCode::renderJSON($data,'ok',200);
+        return  HttpCode::renderJSON($list,'ok',200);
 
         }else{
             return  HttpCode::renderJSON([],'请求方式出错','418');
