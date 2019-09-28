@@ -35,6 +35,7 @@ class CacheController extends Controller
      */
     public function actionVersion()
     {
+
         if ((\Yii::$app->request->isPost)) {
             $version =  \Yii::$app->request->post('version');
 
