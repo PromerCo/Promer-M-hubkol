@@ -1,14 +1,9 @@
 <?php
-namespace apiminip\controllers;
+namespace mhubkol\controllers;
 
-use Yii;
-use common\models\LoginForm;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use yii\web\Request;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
 
 /**
  * Site controller

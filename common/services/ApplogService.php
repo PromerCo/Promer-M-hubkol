@@ -1,8 +1,7 @@
 <?php
 namespace mhubkol\common\services;
 
-use mhubkol\common\services\UtilService;
-use mhubkol\models\HubkolLog;
+use mhubkol\modules\v1\models\HubkolLog;
 use Yii;
 
 class ApplogService {
