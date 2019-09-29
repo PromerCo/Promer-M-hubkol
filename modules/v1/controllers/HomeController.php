@@ -44,7 +44,7 @@ GROUP BY hubkol_push.id ORDER by hubkol_push.create_date DESC LIMIT $start_page,
 
   foreach ($data as $key=>$value){
       $data[$key]['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();
-      $data[$key]['create_time'] = Common::time_tranx($value['create_date']);
+      $data[$key]['create_time'] = Common::time_tranx($value['create_date'],1);
   }
   return  HttpCode::renderJSON($data,'ok','200');
     }
