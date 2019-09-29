@@ -95,7 +95,7 @@ class Common extends Controller
         );
         foreach ($f as $k=>$v)    {
             if (0 !=$c=floor($t/(int)$k)) {
-                return $c.$v.'前';
+                return $c.$v;
             }
         }
     }
