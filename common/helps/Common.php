@@ -76,7 +76,7 @@ class Common extends Controller
         date_default_timezone_set("PRC");
         $time = strtotime($time);
 
-        $t= time()-$time;
+        $t= $time-time();
 
         $f=array(
             '31536000'=>'年',
