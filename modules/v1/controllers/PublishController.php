@@ -33,13 +33,7 @@ class PublishController extends BaseController
             $transaction = \Yii::$app->db->beginTransaction();
             $push = new HubkolPush();
             $hub_id =  HubkolHub::find()->where(['uid'=>$this->uid])->select('id')->asArray()->one();  //外加一个状态 标识切换账号
-            /*
-             * 查看是否填写资料
-             */
-           $info =   HubkolUser::find()->where(['id'=>$this->uid])->select(['nick_name','avatar_url'])->asArray()->one();
-           if (empty($info['nick_name']) || empty($info['avatar_url'])){
-               return  HttpCode::renderJSON([],'请先完善资料','412');
-           }
+
 
             if (empty($hub_id) || !$hub_id){
                 return  HttpCode::renderJSON([],'请先完善资料','412');

@@ -56,7 +56,6 @@ class KolController extends BaseController
 
         $start_page = $data['start_page']??0;
 
-
         if (empty($data['type']) || $data['type']==0){
             $result = HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.tags,hubkol_kol.id,
 hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,
