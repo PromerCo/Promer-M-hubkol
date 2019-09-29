@@ -72,11 +72,17 @@ class Common extends Controller
         return $result;
     }
 
-    public  static  function time_tranx($time){
+    public  static  function time_tranx($time,$type=0){
         date_default_timezone_set("PRC");
         $time = strtotime($time);
 
-        $t= $time-time();
+        if ($type == 1){
+            $t= time()-$time;
+        }else{
+            $t= $time-time();
+        }
+
+
 
         $f=array(
             '31536000'=>'年',
