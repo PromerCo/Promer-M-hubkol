@@ -68,6 +68,7 @@ GROUP BY hubkol_push.id ORDER by hubkol_push.create_date DESC LIMIT $start_page,
 
         //time_tranx
         $data['expire_time']  = Common::time_tranx($data['expire_time']);
+        $data['create_time'] = Common::time_tranx($data['create_date'],1);
 
         $data['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$data['tags'].")")->asArray()->all();
         return  HttpCode::renderJSON($data,'ok','200');
