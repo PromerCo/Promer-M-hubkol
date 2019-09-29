@@ -46,8 +46,7 @@ class PublishController extends BaseController
 
                 $transaction->commit();
                 $info['push_id']   = $push->id;
-                $info['nick_name'] =$info['nick_name'];
-                $info['avatar_url'] =  $info['avatar_url'];
+
                 return  HttpCode::renderJSON($info,'ok','201');
             }
         }else{
