@@ -42,7 +42,6 @@ class HubkolPush extends BaseModel
             [['expire_time', 'create_date', 'update_time'], 'safe'],
             [['platform', 'tags'], 'string', 'max' => 30],
             [['follow_level', 'type'], 'string', 'max' => 6],
-            [['describe'], 'string', 'max' => 100],
             [['convene', 'bystander_number', 'enroll_number'], 'string', 'max' => 5]
         ];
     }
