@@ -17,7 +17,7 @@ class AliOss
         $accessKeySecret    = Yii::$app->params['oss']['accessKeySecret'];
         $endpoint           = Yii::$app->params['oss']['endPoint'];
         self::$bucket       = Yii::$app->params['oss']['bucket'];
-        self::$oss = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+        self::$oss          = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
     }
 
     public function uploadImage($file)
