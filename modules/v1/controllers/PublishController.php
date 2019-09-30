@@ -35,7 +35,7 @@ class PublishController extends BaseController
             $hub_id =  HubkolHub::find()->where(['uid'=>$this->uid])->select('id')->asArray()->one();  //外加一个状态 标识切换账号
 
             if (empty($hub_id) || !$hub_id){
-                return  HttpCode::renderJSON([],'请先完善资料','412');
+                return  HttpCode::renderJSON([],'请先完善HUB资料','415');
             }else{
                 $data['hub_id'] = $hub_id['id'];
             }
