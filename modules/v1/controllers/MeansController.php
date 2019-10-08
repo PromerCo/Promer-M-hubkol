@@ -7,7 +7,7 @@ use mhubkol\modules\v1\models\HubkolUser;
 use mhubkol\modules\v1\services\ParamsValidateService;
 use mhubkol\modules\v1\services\HubkolUserService;
 
-/**
+/**miexhibit
  * Site controller
 */
 class MeansController extends BaseController
@@ -59,8 +59,6 @@ class MeansController extends BaseController
                         [['create_date', 'update_time'], 'safe'],
                         [['wechat', 'email', 'industry', 'company', 'brand', 'city'], 'string', 'max' => 30],
                         [['phone'],'match','pattern'=>'/^[1][358][0-9]{9}$/'],
-//                        [['position_code'], 'string', 'max' => 30],
-//                        [['profile'], 'string', 'max' => 100]
                     ]);
                     if (!$valid) {
                         return  HttpCode::renderJSON([],$params->getErrors(),'412');
@@ -102,7 +100,6 @@ class MeansController extends BaseController
                         [['wechat', 'phone', 'city','platform','tags','account','follow_level','city_code','province','province_code'], 'required'],
                         [['follow_level'], 'string', 'max' => 6],
                         [['phone'],'match','pattern'=>'/^[1][358][0-9]{9}$/'],
-//                        [['content'], 'string'],
                     ]);
                     if (!$valid) {
                         return  HttpCode::renderJSON([],$params->getErrors(),'412');
