@@ -92,6 +92,8 @@ class UserController extends BaseController
     public function actionRole(){
         $uid = $this->uid;
         $types =  HubkolUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one();
+
+
         return  HttpCode::renderJSON( $types['capacity'],'ok','201');
     }
 
