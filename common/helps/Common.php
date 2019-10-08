@@ -80,6 +80,9 @@ class Common extends Controller
             $t= time()-$time;
         }else{
             $t= $time-time();
+            if ($t<0){
+                return '活动已结束';
+            }
         }
 
 
@@ -95,7 +98,7 @@ class Common extends Controller
         );
         foreach ($f as $k=>$v)    {
             if (0 !=$c=floor($t/(int)$k)) {
-                return $c.$v;
+                return $c.$v.'后结束';
             }
         }
     }
