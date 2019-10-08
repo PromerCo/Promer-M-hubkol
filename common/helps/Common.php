@@ -80,6 +80,9 @@ class Common extends Controller
             $t= time()-$time;
         }else{
             $t= $time-time();
+            if ($t<0){
+                return '活动已结束';
+            }
         }
 
 
