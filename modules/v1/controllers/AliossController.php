@@ -37,7 +37,7 @@ class AliossController extends  Controller
 
     public function actionTest()
     {
-        $imgs_banner = trim($_FILES['file']['name']);
+    //    $imgs_banner = trim($_FILES['file']['name']);
         $oss = new AliOss();
         $req = $oss->uploadImage($imgs_banner);
 
