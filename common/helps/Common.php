@@ -125,4 +125,16 @@ class Common extends Controller
         return false;
     }
 
+
+    /*
+     * 获取ToKen
+     */
+    public static function getAccessToken ($appid, $appsecret) {
+        $url='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$appid.'&secret='.$appsecret;
+        $html = file_get_contents($url);
+        $output = json_decode($html, true);
+        $access_token = $output['access_token'];
+        return $access_token;
+    }
+
 }
