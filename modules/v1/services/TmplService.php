@@ -1,6 +1,7 @@
 <?php
 namespace mhubkol\modules\v1\services;
 
+use mhubkol\common\components\HttpClient;
 use mhubkol\common\helps\Common;
 
 require_once   __DIR__."./../../../../vendor/tmplmsg/wxBizMsgCrypt.php";
@@ -56,8 +57,8 @@ class TmplService  {
 
         $data = json_encode($post_data, true);
         $url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=".$access_token;
-//        $send_msg = $this->send_post( $url, $data);
-        $send_msg =  http_post_data($url,$data);
+        $send_msg =HttpClient::post($url,$data);
+
         return $send_msg;
 
 
