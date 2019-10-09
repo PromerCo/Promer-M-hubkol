@@ -195,10 +195,12 @@ ON hubkol_hub.uid = hubkol_user.id
 WHERE hubkol_hub.uid =$uid")->asArray()->one();
          }
 
-         print_r($enroll);
+         return  HttpCode::renderJSON($enroll,'ok','201');
 
         }else{
             //KOL
+
+
         }
     }
 
