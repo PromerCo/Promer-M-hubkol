@@ -187,15 +187,15 @@ class MeansController extends BaseController
             //HUB
          $bystander =   HubKolPush::find()->where(['id'=>'35'])->select(['bystander'])->asArray()->one();
          $enroll =  json_decode(json_decode($bystander['bystander'],true),true);
-         $array = [];
+
          foreach ($enroll as $key =>$value){
              $uid = $value['uid'];
-             $array['msg']  =  HubkolKol::findBySql("SELECT hubkol_hub.wechat,hubkol_user.avatar_url FROM  hubkol_hub  LEFT JOIN  hubkol_user
+             $enroll[$key]['msg']  =  HubkolKol::findBySql("SELECT hubkol_hub.wechat,hubkol_user.avatar_url FROM  hubkol_hub  LEFT JOIN  hubkol_user
 ON hubkol_hub.uid = hubkol_user.id
 WHERE hubkol_hub.uid =$uid")->asArray()->one();
          }
 
-         print_r($array);
+         print_r($enroll);
 
         }else{
             //KOL
