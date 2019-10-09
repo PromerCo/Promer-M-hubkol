@@ -115,8 +115,8 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
                       $tmpl =   new TmplService($formId,$uid);
                       $update_form =  HubkolUser::updateAll(['form_id'=>$formId,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$uid]);
 
-                          return  HttpCode::renderJSON([],$uid,'416');
-
+                          return  HttpCode::renderJSON([],$update_form,'416');
+                  
                       $tmpl_msg  =  HubkolPush::findBySql("SELECT hubkol_user.open_id,hubkol_user.form_id,hubkol_push.title   FROM hubkol_push 
 LEFT JOIN hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
 LEFT JOIN  hubkol_user ON hubkol_hub.uid = hubkol_user.id
