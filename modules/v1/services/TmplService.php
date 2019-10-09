@@ -26,7 +26,7 @@ class TmplService  {
         $this->appsecret = \Yii::$app->params['app_secret'];
         $this->formId = $formId;
         $this->uid = $uid;
-        HubkolUser::updateAll(['form_id'=>$this->formId,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$uid]);
+        HubkolUser::updateAll(['form_id'=>$this->formId,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$this->uid]);
 
     }
 
