@@ -1,6 +1,5 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
-use mhubkol\common\helps\Common;
 use yii\web\Controller;
 
 /**
@@ -31,9 +30,13 @@ class TmplController extends Controller
 
         $token = \Yii::$app->params['ToKen'];
 
+
+
         $signature = $_GET["signature"];
-        $timestamp = time();
-        $nonce = Common::getRandChar();
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+
+
         $tmpArr = array($token, $timestamp, $nonce);
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode($tmpArr);
