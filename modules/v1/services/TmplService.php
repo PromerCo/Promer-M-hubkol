@@ -41,17 +41,11 @@ class TmplService  {
         $templateid = \Yii::$app->params['tmpl_activity'];
         $formid = $this->formId;
         $post_data = array (
-            // 用户的 openID，可用过 wx.getUserInfo 获取
             "touser"           => $openid,
-            // 小程序后台申请到的模板编号
             "template_id"      => $templateid,
-            // 点击模板消息后跳转到的页面，可以传递参数
             "page"             => $page,
-            // 第一步里获取到的 formID
             "form_id"          => $formid,
-            // 数据
             "data"             => $data_arr,
-            // 需要强调的关键字，会加大居中显示
             "emphasis_keyword" => "keyword2.DATA"
         );
 
