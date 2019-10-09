@@ -113,7 +113,7 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
                        * 发送模板消息
                        */
                       $tmpl =   new TmplService($formId,$uid);
-                      $update_form =  HubkolUser::updateAll(['form_id'=>$formId,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>47]);
+                      $update_form =  HubkolUser::updateAll(['form_id'=>$formId,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$uid]);
                       if (!$update_form){
                           return  HttpCode::renderJSON([],$formId,'416');
                       }
@@ -127,8 +127,12 @@ WHERE hubkol_push.id = $push_id
                       }
 
 
+
                       $send_tmpl=  $tmpl->activitySend($user_info['nick_name'],$tmpl_msg['open_id'],$tmpl_msg['form_id'],'2019/10/10','18511587569',$tmpl_msg['title']);
                       $send_tmpl = json_decode($send_tmpl,true);
+
+                      return  HttpCode::renderJSON([],$send_tmpl,'416');
+
                       if ($send_tmpl['errcode'] == 0){
                           $transaction->commit();  //提交事务
                           return  HttpCode::renderJSON($user_info['avatar_url'],'报名成功','201');
