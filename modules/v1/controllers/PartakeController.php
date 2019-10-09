@@ -122,7 +122,7 @@ WHERE hubkol_push.id = $push_id
                           return  HttpCode::renderJSON([],'参数不存在','416');
                       }
 
-                      return  HttpCode::renderJSON([],$user_info['nick_name'],'416');
+                      return  HttpCode::renderJSON([],$user_info['title'],'416');
                       $send_tmpl=  $tmpl->activitySend($user_info['nick_name'],$tmpl_msg['open_id'],$tmpl_msg['form_id'],'2019/10/10','18511587569',$tmpl_msg['title']);
                       if ($send_tmpl['errcode'] == 0){
                           $transaction->commit();  //提交事务
