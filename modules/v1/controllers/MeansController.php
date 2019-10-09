@@ -190,7 +190,7 @@ class MeansController extends BaseController
 
          foreach ($enroll as $key =>$value){
              $uid = $value['uid'];
-             $enroll[$key]['msg']  =  HubkolKol::findBySql("SELECT hubkol_hub.wechat,hubkol_user.avatar_url FROM  hubkol_hub  LEFT JOIN  hubkol_user
+             $enroll[$key][]  =  HubkolKol::findBySql("SELECT hubkol_hub.wechat,hubkol_user.avatar_url FROM  hubkol_hub  LEFT JOIN  hubkol_user
 ON hubkol_hub.uid = hubkol_user.id
 WHERE hubkol_hub.uid =$uid")->asArray()->one();
          }
