@@ -31,6 +31,7 @@ class HomeController extends Controller
      */
     public function  actionIndex(){
 
+
         $start_page = \Yii::$app->request->post('start_page')??0;
         $end_page   = \Yii::$app->request->post('end_page')??5;
 
