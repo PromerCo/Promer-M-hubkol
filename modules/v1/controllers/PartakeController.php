@@ -117,15 +117,15 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
 JOIN hubkol_user ON hubkol_push.uid = hubkol_user.id
 WHERE hubkol_push.id = $push_id
 ")->asArray()->one();
-                      $transaction->commit();  //提交事务
-//                      $send_tmpl=  $tmpl->activitySend('张三',$tmpl_msg['open_id'],$tmpl_msg['form_id'],'2019/10/10','18511587569','西门庆大战洪教头','');
-//                      if ($send_tmpl['errcode'] == 0){
-//                          $transaction->commit();  //提交事务
+
+                      $send_tmpl=  $tmpl->activitySend($user_info['nick_name'],$tmpl_msg['open_id'],$tmpl_msg['form_id'],'2019/10/10',$user_info['phone_number'],'西门庆大战洪教头');
+                      if ($send_tmpl['errcode'] == 0){
+                          $transaction->commit();  //提交事务
                           return  HttpCode::renderJSON($user_info['avatar_url'],'报名成功','201');
-//                      }else{
-//                          RedisLock::unlock($key);  //清空KEY
-//                          return  HttpCode::renderJSON([],'报名失败','416');
-//                      }
+                      }else{
+                          RedisLock::unlock($key);  //清空KEY
+                          return  HttpCode::renderJSON([],'报名失败','416');
+                      }
                       /*
                        * 发送模板消息
                        */

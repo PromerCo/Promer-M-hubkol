@@ -37,14 +37,13 @@ class TmplService  {
         $color = '#FF0000';
         $data_arr = array(
             'keyword1' => array( "value" => $userName, "color" => $color ),   //姓名
+            'keyword2' => array( "value" => $submit_time, "color" => $color ),  //提交时间
             'keyword3' => array( "value" => $contact, "color" => $color ),   //联系方式
-            'keyword4' => array( "value" => $activity_name, "color" => $color ), //活动名称
-            'keyword2' => array( "value" => $submit_time, "color" => $color )  //提交时间
+            'keyword4' => array( "value" => $activity_name, "color" => $color ) //活动名称
         );
-        $openid = $openId;
         $templateid = \Yii::$app->params['tmpl_activity'];
         $post_data = array (
-            "touser"           => $openid,
+            "touser"           => $openId,
             "template_id"      => $templateid,
             "page"             => $page,
             "form_id"          => $form_id,
