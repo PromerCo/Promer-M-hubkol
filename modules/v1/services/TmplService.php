@@ -11,12 +11,15 @@ class TmplService  {
     private $token;
     private $encodingAesKey;
     private $appId;
+    private $appsecret;
 
     public function __construct()
     {
         $this->token = \Yii::$app->params['Token'];
         $this->encodingAesKey = \Yii::$app->params['encodingAesKey'];
         $this->appId = \Yii::$app->params['app_id'];
+        $this->appsecret = \Yii::$app->params['app_secret'];
+
     }
     public function send(){
         $pc = new \WXBizMsgCrypt($this->token, $this->encodingAesKey,  $this->appId);
@@ -46,13 +49,78 @@ class TmplService  {
         } else {
             print($errCode . "\n");
         }
+    }
 
+    public function activitySend(){
 
+        $access_token =   $this->getAccessToken($this->appId,$this->appsecret);
 
+        $value = '测试';
+        $color = '#FF0000';
+        $data_arr = array(
+            'keyword1' => array( "value" => $value, "color" => $color ),
+            'keyword2' => array( "value" => $value, "color" => $color ),
+            'keyword3' => array( "value" => $value, "color" => $color ),
+            'keyword4' => array( "value" => $value, "color" => $color )
+        );
 
+        $openid = 'o4Eh85fLifkYNYYiM4udmh0FM998';
+        $templateid = 'ePAuWztIxOdb3S-9OW6eE0AfEyT0VTY1NuYiFEwmH3A';
+        $formid = '339f1696b1544e87b3811433179f7910';
+        $post_data = array (
+            // 用户的 openID，可用过 wx.getUserInfo 获取
+            "touser"           => $openid,
+            // 小程序后台申请到的模板编号
+            "template_id"      => $templateid,
+            // 点击模板消息后跳转到的页面，可以传递参数
+            "page"             => "/pages/app/init/main",
+            // 第一步里获取到的 formID
+            "form_id"          => $formid,
+            // "prepay_id"          => $formid,
+            // 数据
+            "data"             => $data_arr,
+            // 需要强调的关键字，会加大居中显示
+            "emphasis_keyword" => "keyword2.DATA"
+
+        );
+
+        $data = json_encode($post_data, true);
+
+        $url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=".$access_token;
+
+        $return = $this->send_post( $url, $data);
+
+        print_r($return);
 
 
     }
+
+     public function send_post( $url, $post_data ) {
+        $options = array(
+            'http' => array(
+                'method'  => 'POST',
+                // header 需要设置为 JSON
+                'header'  => 'Content-type:application/json',
+                'content' => $post_data,
+                // 超时时间
+                'timeout' => 60
+            )
+        );
+
+        $context = stream_context_create( $options );
+        $result = file_get_contents( $url, false, $context );
+
+        return $result;
+    }
+
+    public function getAccessToken ($appid, $appsecret) {
+        $url='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$appid.'&secret='.$appsecret;
+        $html = file_get_contents($url);
+        $output = json_decode($html, true);
+        $access_token = $output['access_token'];
+        return $access_token;
+    }
+
 
 
 
