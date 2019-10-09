@@ -30,7 +30,7 @@ class TmplController extends Controller
     {
        $data =   new TmplService();
 
-       print_r($data);
+       print_r($data->send());
 
 
     }
