@@ -30,8 +30,24 @@ class TmplService  {
         } else {
             print($errCode . "\n");
         }
-        $xml_tree = new DOMDocument();
+
+        $xml_tree = new \DOMDocument();
         $xml_tree->loadXML($encryptMsg);
+        $array_e = $xml_tree->getElementsByTagName('Encrypt');
+        $array_s = $xml_tree->getElementsByTagName('MsgSignature');
+        $encrypt = $array_e->item(0)->nodeValue;
+        $msg_sign = $array_s->item(0)->nodeValue;
+        $format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
+        $from_xml = sprintf($format, $encrypt);
+        $msg = '';
+        $errCode = $pc->decryptMsg($msg_sign, $timeStamp, $nonce, $from_xml, $msg);
+        if ($errCode == 0) {
+            print("解密后: " . $msg . "\n");
+        } else {
+            print($errCode . "\n");
+        }
+
+
 
 
 
