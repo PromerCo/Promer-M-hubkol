@@ -33,9 +33,9 @@ class TmplService  {
         $color = '#FF0000';
         $data_arr = array(
             'keyword1' => array( "value" => $userName, "color" => $color ),   //姓名
-            'keyword2' => array( "value" => $submit_time, "color" => $color ),  //提交时间
             'keyword3' => array( "value" => $contact, "color" => $color ),   //联系方式
-            'keyword4' => array( "value" => $activity_name, "color" => $color ) //活动名称
+            'keyword4' => array( "value" => $activity_name, "color" => $color ), //活动名称
+            'keyword2' => array( "value" => $submit_time, "color" => $color )  //提交时间
         );
         $openid = $openId;
         $templateid = \Yii::$app->params['tmpl_activity'];
@@ -58,28 +58,8 @@ class TmplService  {
         $data = json_encode($post_data, true);
         $url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=".$access_token;
         $send_msg =HttpClient::post($url,$data);
-
         return $send_msg;
 
-
-    }
-
-     public function send_post( $url, $post_data ) {
-        $options = array(
-            'http' => array(
-                'method'  => 'POST',
-                // header 需要设置为 JSON
-                'header'  => 'Content-type:application/json',
-                'content' => $post_data,
-                // 超时时间
-                'timeout' => 60
-            )
-        );
-
-        $context = stream_context_create( $options );
-        $result = file_get_contents( $url, false, $context );
-
-        return $result;
     }
 
 
