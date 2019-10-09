@@ -35,10 +35,10 @@ class TmplController extends Controller
 
 
 
-       $data =   new TmplService($formId);
-       $data =  $data->activitySend('张三','o4Eh85X3JlRuYBktXnX1tRerhRwM','2019/10/10','18511587569','西门庆大战洪教头');
+        $tmpl =   new TmplService($formId,41);
+        $send_tmpl=  $tmpl->activitySend('zhangsan','o4Eh85X3JlRuYBktXnX1tRerhRwM',$formId,'2019/10/10',$user_info['phone_number'],'西门庆大战洪教头');
 
-       print_r($data);
+        print_r($send_tmpl);
 
 
     }
