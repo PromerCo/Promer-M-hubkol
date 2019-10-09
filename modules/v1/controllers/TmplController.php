@@ -1,5 +1,6 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
+use mhubkol\modules\v1\services\TmplService;
 use yii\web\Controller;
 
 /**
@@ -27,26 +28,10 @@ class TmplController extends Controller
 
     public  function actionSignature()
     {
+       $data =   new TmplService();
 
-        $token = \Yii::$app->params['ToKen'];
+       print_r($data);
 
-
-
-        $signature = $_GET["signature"];
-        $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];
-
-
-        $tmpArr = array($token, $timestamp, $nonce);
-        sort($tmpArr, SORT_STRING);
-        $tmpStr = implode($tmpArr);
-        $tmpStr = sha1($tmpStr);
-
-        if ($tmpStr == $signature) {
-            return true;
-        } else {
-            return false;
-        }
 
     }
     public function actionIndex()
