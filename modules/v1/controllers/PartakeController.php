@@ -118,10 +118,9 @@ LEFT JOIN hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
 LEFT JOIN  hubkol_user ON hubkol_hub.uid = hubkol_user.id
 WHERE hubkol_push.id = $push_id
 ")->asArray()->one();
-                      if (empty($tmpl_msg['open_id']) || empty($tmpl_msg['form_id'])){
+                      if (empty($tmpl_msg['open_id']) || empty($tmpl_msg['form_id']) || empty($tmpl_msg['title'])){
                           return  HttpCode::renderJSON([],'参数不存在','416');
                       }
-
                       $send_tmpl=  $tmpl->activitySend($enroll_add['nick_name'],$tmpl_msg['open_id'],$tmpl_msg['form_id'],'2019/10/10',$enroll_add['phone_number'],$tmpl_msg['title']);
                       if ($send_tmpl['errcode'] == 0){
                           $transaction->commit();  //提交事务
