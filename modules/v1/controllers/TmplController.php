@@ -29,10 +29,14 @@ class TmplController extends Controller
     public  function actionSignature()
     {
        $formId = \Yii::$app->request->post('form_id');
+       //1.更新该用户form_id操作
+       //2.查找活动ID
+
+
 
 
        $data =   new TmplService($formId);
-       $data =  $data->activitySend('张三','o4Eh85cxPe3CNjUvFecfeiFDJRMQ','2019/10/10','18511587569','西门庆大战洪教头');
+       $data =  $data->activitySend('张三','o4Eh85X3JlRuYBktXnX1tRerhRwM','2019/10/10','18511587569','西门庆大战洪教头');
 
        print_r($data);
 

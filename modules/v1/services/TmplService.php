@@ -3,6 +3,7 @@ namespace mhubkol\modules\v1\services;
 
 use mhubkol\common\components\HttpClient;
 use mhubkol\common\helps\Common;
+use mhubkol\modules\v1\models\HubkolUser;
 
 require_once   __DIR__."./../../../../vendor/tmplmsg/wxBizMsgCrypt.php";
 
@@ -15,19 +16,22 @@ class TmplService  {
     private $appId;
     private $appsecret;
     private $formId;
+    private $uid;
 
-    public function __construct($formId)
+    public function __construct($formId,$uid)
     {
         $this->token = \Yii::$app->params['Token'];
         $this->encodingAesKey = \Yii::$app->params['encodingAesKey'];
         $this->appId = \Yii::$app->params['app_id'];
         $this->appsecret = \Yii::$app->params['app_secret'];
         $this->formId = $formId;
+        $this->uid = $uid;
+        HubkolUser::updateAll(['form_id'=>$this->formId,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$uid]);
 
     }
 
 
-    public function activitySend($userName,$openId,$submit_time,$contact,$activity_name,$page="/pages/home/home"){
+    public function activitySend($userName,$openId,$form_id,$submit_time,$contact,$activity_name,$page="/pages/home/home"){
 
         $access_token =   Common::getAccessToken($this->appId,$this->appsecret);
         $color = '#FF0000';
@@ -39,12 +43,11 @@ class TmplService  {
         );
         $openid = $openId;
         $templateid = \Yii::$app->params['tmpl_activity'];
-        $formid = $this->formId;
         $post_data = array (
             "touser"           => $openid,
             "template_id"      => $templateid,
             "page"             => $page,
-            "form_id"          => $formid,
+            "form_id"          => $form_id,
             "data"             => $data_arr,
             "emphasis_keyword" => "keyword2.DATA"
         );
