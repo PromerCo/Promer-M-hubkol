@@ -12,13 +12,15 @@ class TmplService  {
     private $encodingAesKey;
     private $appId;
     private $appsecret;
+    private $formId;
 
-    public function __construct()
+    public function __construct($formId)
     {
         $this->token = \Yii::$app->params['Token'];
         $this->encodingAesKey = \Yii::$app->params['encodingAesKey'];
         $this->appId = \Yii::$app->params['app_id'];
         $this->appsecret = \Yii::$app->params['app_secret'];
+        $this->formId = $formId;
 
     }
     public function send(){
@@ -66,7 +68,7 @@ class TmplService  {
 
         $openid = 'o4Eh85fLifkYNYYiM4udmh0FM998';
         $templateid = 'ePAuWztIxOdb3S-9OW6eE0AfEyT0VTY1NuYiFEwmH3A';
-        $formid = '342b8854ac574ef591c2b3c83a7886fc';
+        $formid = $this->formId;
         $post_data = array (
             // 用户的 openID，可用过 wx.getUserInfo 获取
             "touser"           => $openid,
