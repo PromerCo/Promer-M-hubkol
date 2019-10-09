@@ -1,5 +1,6 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
+use backend\models\HubKolPush;
 use mhubkol\common\helps\HttpCode;
 use mhubkol\modules\v1\models\HubkolHub;
 use mhubkol\modules\v1\models\HubkolKol;
@@ -173,7 +174,27 @@ class MeansController extends BaseController
          }
     }else{
             return  HttpCode::renderJSON([],'请求方式出错','418');
+    }
+    }
 
+    /*
+     * 查看报名的人信息
+     */
+    public function actionEnroll(){
+        $uid =  $this->uid; //获取用户ID
+        $types =  HubkolUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one(); //查询类型(状态)
+        if ($types['capacity'] == 1){
+            //HUB
+         $bystander =   HubKolPush::find()->where(['id'=>'35'])->select(['bystander'])->asArray()->one();
+
+         print_r($bystander);
+
+        }else{
+            //KOL
+        }
     }
-    }
+
+
+
+
 }
