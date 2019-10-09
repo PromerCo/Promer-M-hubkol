@@ -108,44 +108,9 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
                   $push_update =   HubkolPush::updateAll(['enroll_number'=>$enroll_number+1,'enroll'=>$json_msg,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$push_id]);
                   $pull_update =    HubkolPull::updateAll(['is_enroll'=>'1','is_success'=>'1','update_time'=>date('Y-m-d H:i:s',time())],['id'=>$enrolls['pull_id']]);
                   if ($push_update && $pull_update){
-                      RedisLock::unlock($key);  //清空KEY
-                      /*
-                       * 发送模板消息
-                       */
-                      $tmpl =   new TmplService($formId,$uid);
-                      $update_form =  HubkolUser::updateAll(['form_id'=>$formId,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$uid]);
-                      if (!$update_form){
-                          return  HttpCode::renderJSON([],$formId,'416');
-                      }
-                      $tmpl_msg  =  HubkolPush::findBySql("SELECT hubkol_user.open_id,hubkol_user.form_id,hubkol_push.title   FROM hubkol_push 
-LEFT JOIN hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
-LEFT JOIN  hubkol_user ON hubkol_hub.uid = hubkol_user.id
-WHERE hubkol_push.id = $push_id
-")->asArray()->one();
-                      if (empty($tmpl_msg['open_id']) || empty($tmpl_msg['form_id']) || empty($tmpl_msg['title'])){
-                          return  HttpCode::renderJSON([],'参数不存在','416');
-                      }
-
-
-
-                      $send_tmpl=  $tmpl->activitySend($user_info['nick_name'],$tmpl_msg['open_id'],$tmpl_msg['form_id'],'2019/10/10','18511587569',$tmpl_msg['title']);
-                      $send_tmpl = json_decode($send_tmpl,true);
-
-                      return  HttpCode::renderJSON([],$send_tmpl,'416');
-
-                      if ($send_tmpl['errcode'] == 0){
+                          RedisLock::unlock($key);  //清空KEY
                           $transaction->commit();  //提交事务
                           return  HttpCode::renderJSON($user_info['avatar_url'],'报名成功','201');
-                      }else{
-                          RedisLock::unlock($key);  //清空KEY
-                          return  HttpCode::renderJSON([],'报名失败','416');
-                      }
-                      /*
-                       * 发送模板消息
-                       */
-
-
-
 
                   }else{
                       RedisLock::unlock($key);  //清空KEY
