@@ -29,6 +29,8 @@ class TmplController extends Controller
     public  function actionSignature()
     {
        $formId = \Yii::$app->request->post('form_id');
+
+
        $data =   new TmplService($formId);
        print_r($data->activitySend());
 

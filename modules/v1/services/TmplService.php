@@ -66,8 +66,13 @@ class TmplService  {
             'keyword4' => array( "value" => $value, "color" => $color )
         );
 
-        $openid = 'o4Eh85fLifkYNYYiM4udmh0FM998';
+        $openid = 'o4Eh85X3JlRuYBktXnX1tRerhRwM';
         $templateid = 'ePAuWztIxOdb3S-9OW6eE0AfEyT0VTY1NuYiFEwmH3A';
+
+        if (empty($this->formId)){
+            return false;
+        }
+
         $formid = $this->formId;
         $post_data = array (
             // 用户的 openID，可用过 wx.getUserInfo 获取
@@ -78,7 +83,6 @@ class TmplService  {
             "page"             => "/pages/app/init/main",
             // 第一步里获取到的 formID
             "form_id"          => $formid,
-            // "prepay_id"          => $formid,
             // 数据
             "data"             => $data_arr,
             // 需要强调的关键字，会加大居中显示
