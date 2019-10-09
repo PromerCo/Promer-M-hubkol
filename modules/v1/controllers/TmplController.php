@@ -32,7 +32,6 @@ class TmplController extends Controller
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
 
-
         $token = \Yii::$app->params['ToKen'];
 
         $tmpArr = array($token, $timestamp, $nonce);
