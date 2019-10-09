@@ -66,7 +66,7 @@ class TmplService  {
 
         $openid = 'o4Eh85fLifkYNYYiM4udmh0FM998';
         $templateid = 'ePAuWztIxOdb3S-9OW6eE0AfEyT0VTY1NuYiFEwmH3A';
-        $formid = '339f1696b1544e87b3811433179f7910';
+        $formid = '342b8854ac574ef591c2b3c83a7886fc';
         $post_data = array (
             // 用户的 openID，可用过 wx.getUserInfo 获取
             "touser"           => $openid,
