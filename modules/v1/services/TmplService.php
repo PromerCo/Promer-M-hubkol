@@ -20,7 +20,7 @@ class TmplService  {
     }
     public function send(){
         $pc = new \WXBizMsgCrypt($this->token, $this->encodingAesKey,  $this->appId);
-        $encryptMsg = '';
+        $encryptMsg = '测试发送';
         $timeStamp = "1409304348";
         $nonce = "2535181275";
         $text = "<xml><ToUserName><![CDATA[oia2Tj我是中文jewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
@@ -39,7 +39,7 @@ class TmplService  {
         $msg_sign = $array_s->item(0)->nodeValue;
         $format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
         $from_xml = sprintf($format, $encrypt);
-        $msg = '呵呵呵';
+        $msg = '测试接收';
         $errCode = $pc->decryptMsg($msg_sign, $timeStamp, $nonce, $from_xml, $msg);
         if ($errCode == 0) {
             print("解密后: " . $msg . "\n");
