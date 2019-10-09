@@ -30,6 +30,11 @@ class TmplService  {
         } else {
             print($errCode . "\n");
         }
+        $xml_tree = new DOMDocument();
+        $xml_tree->loadXML($encryptMsg);
+
+
+
 
     }
 
