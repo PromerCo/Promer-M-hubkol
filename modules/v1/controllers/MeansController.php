@@ -187,7 +187,7 @@ class MeansController extends BaseController
             //HUB
          $bystander =   HubKolPush::find()->where(['id'=>'35'])->select(['bystander'])->asArray()->one();
 
-         $enroll = $bystander['bystander'];
+         $enroll =  json_decode($bystander['bystander'],true);
 
          print_r($enroll);
 
