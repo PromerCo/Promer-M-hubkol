@@ -113,16 +113,16 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
                        * 发送模板消息
                        */
                       $tmpl =   new TmplService($formId,$uid);
-                      $tmpl_msg  =  HubkolPush::findBySql("SELECT hubkol_user.open_id,hubkol_user.form_id FROM hubkol_push LEFT 
-JOIN hubkol_user ON hubkol_push.uid = hubkol_user.id
+                      $tmpl_msg  =  HubkolPush::findBySql("SELECT hubkol_user.open_id,hubkol_user.form_id,hubkol_push.title   FROM hubkol_push 
+LEFT JOIN hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
+LEFT JOIN  hubkol_user ON hubkol_hub.uid = hubkol_user.id
 WHERE hubkol_push.id = $push_id
 ")->asArray()->one();
                       if (empty($tmpl_msg['open_id']) || empty($tmpl_msg['form_id'])){
                           return  HttpCode::renderJSON([],'参数不存在','416');
                       }
 
-
-                      $send_tmpl=  $tmpl->activitySend($enroll_add['nick_name'],$tmpl_msg['open_id'],$tmpl_msg['form_id'],'2019/10/10',$enroll_add['phone_number'],'西门庆大战洪教头');
+                      $send_tmpl=  $tmpl->activitySend($enroll_add['nick_name'],$tmpl_msg['open_id'],$tmpl_msg['form_id'],'2019/10/10',$enroll_add['phone_number'],$tmpl_msg['title']);
                       if ($send_tmpl['errcode'] == 0){
                           $transaction->commit();  //提交事务
                           return  HttpCode::renderJSON($user_info['avatar_url'],'报名成功','201');
