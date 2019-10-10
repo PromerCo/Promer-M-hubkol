@@ -129,6 +129,8 @@ hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.`profile` FROM hubkol_kol
 LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
 LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
 WHERE hubkol_kol.id = $pro_id")->asArray()->all();
+      print_r($data);
+      die;
       foreach ($data as $key => $value){
 
               $data[$key]['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();
