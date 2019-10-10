@@ -102,8 +102,6 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hub
 LEFT JOIN  hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
 LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
 WHERE hubkol_hub.uid =$uid  ORDER BY hubkol_push.create_date desc")->asArray()->all();
-
-
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
             case 2:
@@ -116,8 +114,30 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
         }
+    }
+
+    /*
+     * KOL (网红) 详情
+     */
+    public function actionKolpro(){
+      $pro_id =  \Yii::$app->request->post('pro_id');
+      if (empty($pro_id)){
+          return  HttpCode::jsonObj([],'参数不能为空','412');
+      }
+      $data   =  HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.city,hubkol_kol.mcn_organization,hubkol_kol.tags
+hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.`profile` FROM hubkol_kol 
+LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
+LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
+WHERE hubkol_kol.id = 37")->asArray()->all();
+      foreach ($data as $key => $value){
+          foreach ($data as $key=>$value){
+              $data[$key]['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();
+          }
+      }
+        return  HttpCode::jsonObj($data,'ok','201');
 
     }
+
    public function assoc_unique($arr, $key)
     {
         $tmp_arr = array();
