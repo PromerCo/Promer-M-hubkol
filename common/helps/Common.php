@@ -84,9 +84,6 @@ class Common extends Controller
                 return '活动已结束';
             }
         }
-
-
-
         $f=array(
             '31536000'=>'年',
             '2592000'=>'个月',
@@ -98,7 +95,7 @@ class Common extends Controller
         );
         foreach ($f as $k=>$v)    {
             if (0 !=$c=floor($t/(int)$k)) {
-                return $c.$v.'后结束';
+                return $c.$v;
             }
         }
     }

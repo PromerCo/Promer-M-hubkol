@@ -31,9 +31,8 @@ class HomeController extends Controller
      */
     public function  actionIndex(){
 
-
-        $start_page = \Yii::$app->request->post('start_page')??0;
-        $end_page   = \Yii::$app->request->post('end_page')??5;
+         $start_page = \Yii::$app->request->post('start_page')??0;
+         $end_page   = \Yii::$app->request->post('end_page')??5;
 
          $data =  HubkolPush::findBySql("SELECT hubkol_push.id,hubkol_push.tags,hubkol_hub.brand,hubkol_push.enroll,hubkol_push.title as push_title,
 hubkol_push.convene,hubkol_push.bystander_number,hubkol_push.create_date,hubkol_follow.title,hubkol_user.avatar_url,hubkol_platform.logo,
