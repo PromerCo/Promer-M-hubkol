@@ -40,6 +40,7 @@ hubkol_platform.id as platform_id FROM hubkol_push  LEFT JOIN hubkol_follow ON h
 LEFT JOIN hubkol_platform ON hubkol_push.platform = hubkol_platform.id
 LEFT JOIN hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
 LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_hub.uid
+WHERE hubkol_push.expire_time > NOW()
 GROUP BY hubkol_push.id ORDER by hubkol_push.create_date DESC LIMIT $start_page,$end_page")->asArray()->all();
 
   foreach ($data as $key=>$value){
