@@ -119,6 +119,7 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
     /*
      * KOL (网红) 详情
      */
+
     public function actionKolpro(){
       $pro_id =  \Yii::$app->request->post('pro_id');
       if (empty($pro_id)){
@@ -135,7 +136,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->all();
               $data[$key]['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();
 
       }
-        return  HttpCode::jsonObj($data,'ok','201');
+        return  HttpCode::renderJSON($data,'ok','201');
 
     }
 
