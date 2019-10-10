@@ -102,6 +102,8 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hub
 LEFT JOIN  hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
 LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
 WHERE hubkol_hub.uid =$uid  ORDER BY hubkol_push.create_date desc")->asArray()->all();
+
+
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
             case 2:
