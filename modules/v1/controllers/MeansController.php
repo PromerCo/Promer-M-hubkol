@@ -181,26 +181,27 @@ class MeansController extends BaseController
      * 查看报名的人信息
      */
     public function actionEnroll(){
-        $uid =  $this->uid; //获取用户ID
-        $types =  HubkolUser::find()->where(['id'=>$uid])->select('capacity')->asArray()->one(); //查询类型(状态)
-        if ($types['capacity'] == 1){
-            //HUB
-         $bystander =   HubKolPush::find()->where(['id'=>'35'])->select(['bystander'])->asArray()->one();
-         $enroll =  json_decode(json_decode($bystander['bystander'],true),true);
 
-         foreach ($enroll as $key =>$value){
-             $uid = $value['uid'];
-             $enroll[$key]  =  HubkolKol::findBySql("SELECT hubkol_hub.wechat,hubkol_user.avatar_url FROM  hubkol_hub  LEFT JOIN  hubkol_user
+        if ((\Yii::$app->request->isPost)) {
+            $push_id = \Yii::$app->request->post('push_id')??35;
+            $uid = $this->uid; //获取用户ID
+            $types = HubkolUser::find()->where(['id' => $uid])->select('capacity')->asArray()->one(); //查询类型(状态)
+            if ($types['capacity'] == 1) {
+                //HUB
+                $bystander = HubKolPush::find()->where(['id' => $push_id])->select(['bystander'])->asArray()->one();
+                $enroll = json_decode(json_decode($bystander['bystander'], true), true);
+                foreach ($enroll as $key => $value) {
+                    $uid = $value['uid'];
+                    $enroll[$key] = HubkolKol::findBySql("SELECT hubkol_hub.wechat,hubkol_user.avatar_url FROM  hubkol_hub  LEFT JOIN  hubkol_user
 ON hubkol_hub.uid = hubkol_user.id
 WHERE hubkol_hub.uid =$uid")->asArray()->one();
-         }
-
-         return  HttpCode::renderJSON($enroll,'ok','201');
-
+                }
+                return HttpCode::renderJSON($enroll, 'ok', '201');
+            } else {
+                return HttpCode::renderJSON([], '请求类型出错', '418');
+            }
         }else{
-            //KOL
-
-
+            return HttpCode::renderJSON([], '请求类型出错', '418');
         }
     }
 
