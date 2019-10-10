@@ -105,7 +105,7 @@ WHERE hubkol_hub.uid =$uid  ORDER BY hubkol_push.create_date desc")->asArray()->
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
             case 2:
-            $data =    HubkolKol::findBySql("SELECT  hubkol_push.id,hubkol_push.title,hubkol_platform.logo,hubkol_pull.is_enroll,hubkol_push.create_date FROM  hubkol_pull 
+            $data =    HubkolPull::findBySql("SELECT  hubkol_push.id,hubkol_push.title,hubkol_platform.logo,hubkol_pull.is_enroll,hubkol_push.create_date FROM  hubkol_pull 
 LEFT JOIN  hubkol_kol ON hubkol_pull.kol_id = hubkol_kol.id
 LEFT JOIN hubkol_push ON hubkol_pull.push_id = hubkol_push.id
 LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
@@ -130,9 +130,9 @@ LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
 LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
 WHERE hubkol_kol.id = $pro_id")->asArray()->all();
       foreach ($data as $key => $value){
-          foreach ($data as $key=>$value){
+
               $data[$key]['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();
-          }
+
       }
         return  HttpCode::jsonObj($data,'ok','201');
 
