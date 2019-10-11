@@ -99,7 +99,9 @@ hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol
 hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
 LEFT JOIN hubkol_user ON hubkol_kol.uid = hubkol_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
-LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id LIMIT $start_page,5")->asArray()->all();
+LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id 
+AND   hubkol_user.id  != $this->uid
+LIMIT $start_page,5")->asArray()->all();
         }
         foreach ($result as $key=>$value){
             $result[$key]['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();
