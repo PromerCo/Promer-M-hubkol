@@ -269,12 +269,13 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
            if ($userinfo['capacity'] == 1){
                $transaction = \Yii::$app->db->beginTransaction();
                $hub_id = HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one();
-               print_r($hub_id);
-               die;
+
                if ($hub_id['id']){
                    //查看是否关注过
                    $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$kol_id,'hub_id'=>$hub_id['id']])->select(['status'])->asArray()->one();
 
+                   print_r($hub_id['id']);
+                   die;
 
                    if (!$follow_status){
                    //没有关注过(插入)
