@@ -64,7 +64,7 @@ class KolController extends BaseController
 
         if (empty($data['type']) || $data['type']==0){
 
-            if ($platform_id == 0){
+            if ($platform_id == 100000){
                 $result = HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.tags,hubkol_kol.id,
 hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.mcn_organization,hubkol_kol.city,
 hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
