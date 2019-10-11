@@ -190,7 +190,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                              $invite_json = json_decode($invite,true);
                              $bm = str_replace(array('[',']'), array('', ''), $invite_json);
                    }else{
-                           $bm = [];
+                           $bm = null;
                   }
                          //没有邀请 -》 获取HUB 头像和ID
                          $user_kol['avatar_url']  = $userinfo['avatar_url'];
