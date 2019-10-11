@@ -201,6 +201,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   $invite_data = json_decode(json_decode($invite,true),true);
                              foreach ($invite_data as $key =>$value){
                                  if ($value['hub_id'] == $hub_id ){
+                                     RedisLock::unlock($key);  //清空KEY
                                      return  HttpCode::renderJSON([],'您已经邀请过了','412');
                                  }
                              }
@@ -230,10 +231,11 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                              return  HttpCode::renderJSON([],'邀请失败','416');
                          }
                      }else{
-
+                         RedisLock::unlock($key);  //清空KEY
                          return  HttpCode::renderJSON([],'请先填写资料','412');
                      }
                   }else{
+                         RedisLock::unlock($key);  //清空KEY
                          return  HttpCode::renderJSON([],'您不是HUB身份','412');
                   }
               }catch (\ErrorException $e){
@@ -273,7 +275,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                if ($hub_id['id']){
                    //查看是否关注过
                    $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$kol_id,'hub_id'=>$hub_id['id']])->select(['status'])->asArray()->one();
-                   
+
 
                    if (!$follow_status){
                    //没有关注过(插入)
