@@ -147,7 +147,6 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
     public function actionKolpro(){
       $pro_id =  \Yii::$app->request->post('pro_id'); //kol
 
-
       if (empty($pro_id)){
           return  HttpCode::jsonObj([],'参数不能为空','412');
       }
@@ -160,7 +159,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
 
            $u_id = HubkolKol::find()->where(['id'=>$pro_id])->select(['uid'])->asArray()->one()['uid'];
 
-            $follow =   HubkolCarefor::find()->where(['kol_id'=>$this->uid,'hub_id'=>$u_id])->select(['status'])->asArray()->one();
+            $follow =   HubkolCarefor::find()->where(['kol_id'=>45,'hub_id'=>49])->select(['status'])->asArray()->one();
             if (empty($follow['status'])){
                 $data['status'] = 0;
             }else{
