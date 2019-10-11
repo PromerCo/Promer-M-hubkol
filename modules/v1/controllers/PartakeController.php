@@ -37,9 +37,6 @@ class PartakeController extends BaseController
     if ((\Yii::$app->request->isPost)) {
             $data  = \Yii::$app->request->post();
 
-            $formId = $data['formId'];
-
-
             $uid = $this->uid;
             $transaction = \Yii::$app->db->beginTransaction();
             if (empty($data['push_id'])){

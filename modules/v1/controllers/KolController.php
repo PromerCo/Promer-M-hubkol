@@ -1,7 +1,9 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
 
+use mhubkol\common\components\RedisLock;
 use mhubkol\common\helps\HttpCode;
+use mhubkol\modules\v1\models\HubkolHub;
 use mhubkol\modules\v1\models\HubkolKol;
 use mhubkol\modules\v1\models\HubkolPlatform;
 use mhubkol\modules\v1\models\HubkolPull;
@@ -76,10 +78,6 @@ LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
 LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id LIMIT $start_page,5")->asArray()->all();
             }
 
-
-
-
-
         }else{
             $pvs = new ParamsValidateService();
             $valid = $pvs->validate($data, [
@@ -138,7 +136,6 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
     /*
      * KOL (网红) 详情
      */
-
     public function actionKolpro(){
       $pro_id =  \Yii::$app->request->post('pro_id');
       if (empty($pro_id)){
@@ -149,13 +146,69 @@ hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.`profile` FROM hubkol_kol
 LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
 LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
 WHERE hubkol_kol.id = $pro_id")->asArray()->one();
-
        $data['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$data['tags'].")")->asArray()->all();
-
-
         return  HttpCode::renderJSON($data,'ok','201');
+    }
+
+    /*
+    * 邀请KOL
+    */
+    public function actionInvite(){
+        if ((\Yii::$app->request->isPost)) {
+            $kol_id  = \Yii::$app->request->post('kol_id')??38;
+            $uid = $this->uid;
+            $transaction = \Yii::$app->db->beginTransaction();
+            if (empty($kol_id)){
+                return  HttpCode::renderJSON([],'参数不能为空','406');
+            }
+            $key = 'mylock';//加锁
+            $is_lock = RedisLock::lock($key);
+            if ($is_lock){
+              try{
+                  //1.HUB身份才可以邀请
+                  //2.资料必须填写
+                  //3.该用户是否邀请过
+
+                  $capacitys =   HubkolUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();
+                  if ($capacitys['capacity'] == 1){
+                     $is_means = HubkolHub::find()->where(['uid'=>$uid])->count();
+                     if ($is_means){
+                         $invite =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
+                         print_r($invite);
+                         die;
+
+
+
+                     }else{
+                         return  HttpCode::renderJSON([],'请先填写资料','412');
+                     }
+
+                  }else{
+                         return  HttpCode::renderJSON([],'您不是HUB身份','412');
+                  }
+
+
+              }catch (\ErrorException $e){
+                  $transaction->rollBack();
+                  throw $e;
+              }
+
+            } else{
+                echo '请稍后再试';
+            }
+
+
+
+
+
+
+        }else{
+            return  HttpCode::jsonObj([],'请求方式出错','418');
+        }
 
     }
+
+
 
    public function assoc_unique($arr, $key)
     {
