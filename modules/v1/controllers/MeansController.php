@@ -188,21 +188,12 @@ class MeansController extends BaseController
             $types = HubkolUser::find()->where(['id' => $uid])->select('capacity')->asArray()->one(); //查询类型(状态)
             if ($types['capacity'] == 1) {
                 //HUB
-                $bystander = HubKolPush::find()->where(['id' => $push_id])->select(['bystander'])->asArray()->one();
-
-                if (empty($bystander['bystander'])){
+                $bystander = HubKolPush::find()->where(['id' => $push_id])->select(['enroll'])->asArray()->one();
+                if (empty($bystander['enroll'])){
                     $enroll = [];
                 }else{
-                    $enroll = json_decode(json_decode($bystander['bystander'], true), true);
-                    foreach ($enroll as $key => $value) {
-                        $uid = $value['uid'];
-                        $enroll[$key] = HubkolKol::findBySql("SELECT hubkol_hub.wechat,hubkol_user.avatar_url FROM  hubkol_hub  LEFT JOIN  hubkol_user
-                    ON hubkol_hub.uid = hubkol_user.id
-                    WHERE hubkol_hub.uid =$uid")->asArray()->one();
-                    }
+                    $enroll = json_decode(json_decode($bystander['enroll'], true), true);
                 }
-
-
                 return HttpCode::renderJSON($enroll, 'ok', '201');
             } else {
                 return HttpCode::renderJSON([], '请求类型出错', '418');
