@@ -177,8 +177,8 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                          $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
                          if (!empty($invites['invite'])){
                              $invite = $invites['invite'];
-                             $invite = json_decode(json_decode($invite,true),true);
-                             foreach ($invite as $key =>$value){
+                             $invite_data = json_decode(json_decode($invite,true),true);
+                             foreach ($invite_data as $key =>$value){
                                  if ($value['hub_id'] == $hub_id ){
                                      return  HttpCode::jsonObj([],'您已经邀请过了','412');
                                  }
