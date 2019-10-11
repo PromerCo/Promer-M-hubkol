@@ -235,7 +235,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                          return  HttpCode::renderJSON([],'请先填写资料','412');
                      }
                   }else{
-            
+
                          return  HttpCode::renderJSON([],'您不是HUB身份','412');
                   }
               }catch (\ErrorException $e){
@@ -301,13 +301,13 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                         }
                    }
                }else{
-                   return  HttpCode::jsonObj([],'请填写HUB资料','416');
+                   return  HttpCode::renderJSON([],'请填写HUB资料','416');
                }
            }else{
-               return  HttpCode::jsonObj([],'只有HUB身份才可以关注哦','416');
+               return  HttpCode::renderJSON([],'只有HUB身份才可以关注哦','416');
            }
        }else{
-           return  HttpCode::jsonObj([],'请求方式出错','418');
+           return  HttpCode::renderJSON([],'请求方式出错','418');
        }
    }
 
