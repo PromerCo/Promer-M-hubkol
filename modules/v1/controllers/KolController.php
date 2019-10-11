@@ -171,6 +171,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   $userinfo =   HubkolUser::find()->where(['id'=>$uid])->select(['capacity','avatar_url','nick_name'])->asArray()->one();
                   if ($userinfo['capacity'] == 1){
                      $hub_id = HubkolHub::find()->where(['uid'=>$uid])->select(['id'])->asArray()->one()['id'];
+                     print_r($hub_id);
 
                      if ($hub_id){
                          $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
