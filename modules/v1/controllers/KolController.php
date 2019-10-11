@@ -294,13 +294,14 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                        }
                    }else{
 
-                      if ($status == 1){
-                          HubkolKol::updateAll(['follow_number'=>$follow_number+1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
-                      }else{
-                          HubkolKol::updateAll(['follow_number'=>$follow_number-1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
-                      }
+
                         $cancel_follow =    HubkolCarefor::updateAll(['status'=>$status,'update_time'=>date('Y-m-d H:i:s',time())],['kol_id'=>$user_id,'hub_id'=>$this->uid]);
                         if ($cancel_follow){
+                            if ($status == 1){
+                                HubkolKol::updateAll(['follow_number'=>$follow_number+1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
+                            }else{
+                                HubkolKol::updateAll(['follow_number'=>$follow_number-1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
+                            }
                             $transaction->commit();
                             return  HttpCode::renderJSON($status,'ok','201');
                         }else{
