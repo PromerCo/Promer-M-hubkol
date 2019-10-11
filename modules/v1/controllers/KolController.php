@@ -324,7 +324,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
            //粉丝
            $data =   HubkolUser::findBySql("SELECT avatar_url,nick_name,IF(capacity = 1,'HUB','KOL') as capacity FROM  hubkol_user WHERE  id =(SELECT kol_id FROM hubkol_carefor WHERE kol_id = $this->uid)")->asArray()->all();
        }
-       return  HttpCode::renderJSON($data,'ok','201');
+       return  HttpCode::jsonObj($data,'ok','201');
    }
 
    public function assoc_unique($arr, $key)
