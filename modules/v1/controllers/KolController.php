@@ -123,12 +123,12 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
             case 2:
-            $data =    HubkolPull::findBySql("SELECT  hubkol_push.id,hubkol_push.title,hubkol_platform.logo,hubkol_pull.is_enroll,hubkol_push.create_date FROM  hubkol_pull 
+            $data =    HubkolPull::findBySql("SELECT  hubkol_push.id,hubkol_push.title,hubkol_platform.logo,hubkol_pull.is_enroll,hubkol_push.create_date,IF( hubkol_push.expire_time > NOW(),'活动进行中','活动已结束') as activity_status FROM  hubkol_pull 
 LEFT JOIN  hubkol_kol ON hubkol_pull.kol_id = hubkol_kol.id
 LEFT JOIN hubkol_push ON hubkol_pull.push_id = hubkol_push.id
 LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
 WHERE hubkol_kol.uid =$uid  AND hubkol_pull.is_enroll = 1
-AND hubkol_push.expire_time > NOW()
+
 ORDER BY hubkol_push.create_date desc")->asArray()->all();
                 return  HttpCode::renderJSON($data,'ok','201');
             break;

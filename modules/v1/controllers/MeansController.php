@@ -196,6 +196,10 @@ class MeansController extends BaseController
                 }
                 return HttpCode::renderJSON($enroll, 'ok', '201');
             } else {
+                //KOL
+                $bystander = HubkolKol::find()->where(['id' => $push_id])->select(['enroll'])->asArray()->one();
+
+
                 return HttpCode::renderJSON([], '请求类型出错', '418');
             }
         }else{
