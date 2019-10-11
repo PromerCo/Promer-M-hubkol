@@ -192,15 +192,15 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   //用户身份为HUB
                   if ($userinfo['capacity'] == 1){
                   //HUB用户是否填写资料
-                  $hub_id = HubkolHub::find()->where(['uid'=>$uid])->select(['id'])->asArray()->one()['id'];
-                  if ($hub_id){
+                  $hub_id = HubkolHub::find()->where(['uid'=>$uid])->select(['id'])->asArray()->one();
+                  if ($hub_id['id']){
                   $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite','invite_number'])->asArray()->one();
                   //查看邀请人数
                   if (!empty($invites['invite'])){
                   $invite = $invites['invite'];
                   $invite_data = json_decode(json_decode($invite,true),true);
                              foreach ($invite_data as $key =>$value){
-                                 if ($value['hub_id'] == $hub_id ){
+                                 if ($value['hub_id'] == $hub_id['id'] ){
                                      RedisLock::unlock($key);  //清空KEY
                                      return  HttpCode::renderJSON([],'您已经邀请过了','412');
                                  }
@@ -212,7 +212,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   }
                          //没有邀请 -》 获取HUB 头像和ID
                          $user_kol['avatar_url']  = $userinfo['avatar_url'];
-                         $user_kol['hub_id']  = $hub_id;
+                         $user_kol['hub_id']  = $hub_id['id'];
                          $add_kol = json_encode($user_kol);
                          if (!$bm){
                              $json_msg   = '['.$bm.$add_kol.']';
