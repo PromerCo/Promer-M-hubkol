@@ -177,7 +177,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   //HUB用户是否填写资料
                   $hub_id = HubkolHub::find()->where(['uid'=>$uid])->select(['id'])->asArray()->one()['id'];
                   if ($hub_id){
-                  $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
+                  $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite','invite_number'])->asArray()->one();
                   //查看邀请人数
                   if (!empty($invites['invite'])){
                   $invite = $invites['invite'];
@@ -202,7 +202,10 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                              $json_msg   = '['.$bm.','.$add_kol.']';
                          }
                          //更新网红信息
-                         $is_update =   HubkolKol::updateAll(['invite'=>$json_msg,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$kol_id]);
+                         $is_update =   HubkolKol::updateAll(['invite'=>$json_msg,'invite_number'=>$invites['invite_number']+1,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$kol_id]);
+                        //邀请人数
+
+
                          if ($is_update){
                              RedisLock::unlock($key);  //清空KEY
                              $transaction->commit();  //提交事务
