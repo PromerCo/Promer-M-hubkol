@@ -265,7 +265,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                        ])->execute();
                        if ($is_success){
                            $transaction->commit();
-                           return  HttpCode::renderJSON($status,'ok','201');
+                           return  HttpCode::renderJSON($status,'create is success','201');
                        }else{
                            return  HttpCode::renderJSON([],'error','412');
                        }
