@@ -179,7 +179,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   if ($hub_id){
                   $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
                   //查看邀请人数
-                  if (!empty($invites['invite'])){
+
                   $invite = $invites['invite'];
                   $invite_data = json_decode(json_decode($invite,true),true);
                              foreach ($invite_data as $key =>$value){
@@ -187,9 +187,8 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                                      return  HttpCode::jsonObj([],'您已经邀请过了','412');
                                  }
                              }
-                             $invite_json = json_decode($invite,true);
-                             $bm = str_replace(array('[',']'), array('', ''), $invite_json);
-                         }
+                  $invite_json = json_decode($invite,true);
+                      $bm = str_replace(array('[',']'), array('', ''), $invite_json);
                          //没有邀请 -》 获取HUB 头像和ID
                          $user_kol['avatar_url']  = $userinfo['avatar_url'];
                          $user_kol['hub_id']  = $hub_id;
