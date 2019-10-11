@@ -201,7 +201,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   $invite_data = json_decode(json_decode($invite,true),true);
                              foreach ($invite_data as $key =>$value){
                                  if ($value['hub_id'] == $hub_id['id'] ){
-                                     RedisLock::unlock($key);  //清空KEY
+
                                      return  HttpCode::renderJSON([],'您已经邀请过了','412');
                                  }
                              }
@@ -227,15 +227,15 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                              $transaction->commit();  //提交事务
                              return  HttpCode::renderJSON($userinfo['avatar_url'],'邀请成功','201');
                          }else{
-                             RedisLock::unlock($key);  //清空KEY
+
                              return  HttpCode::renderJSON([],'邀请失败','416');
                          }
                      }else{
-                         RedisLock::unlock($key);  //清空KEY
+
                          return  HttpCode::renderJSON([],'请先填写资料','412');
                      }
                   }else{
-                         RedisLock::unlock($key);  //清空KEY
+                  、
                          return  HttpCode::renderJSON([],'您不是HUB身份','412');
                   }
               }catch (\ErrorException $e){
