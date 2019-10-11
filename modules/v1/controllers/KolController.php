@@ -173,10 +173,11 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
 
                   if ($capacitys['capacity'] == 1){
                      $is_means = HubkolHub::find()->where(['uid'=>$uid])->count();
-                     print_r($is_means);
+
                      if ($is_means){
                          $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
                          $invite = $invites['invite'];
+                         $invite = json_decode($invite,true);
                          print_r($invite);
                          die;
 
