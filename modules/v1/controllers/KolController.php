@@ -316,17 +316,16 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
     * 我关注（粉丝）
     */
    public function actionFoluser(){
-       $type = \Yii::$app->request->post('type')??0;
+       $type = \Yii::$app->request->post('type');
        if ($type == 0){
            //关注
-           $data =   HubkolUser::findBySql("SELECT avatar_url,nick_name,IF(capacity = 1,'HUB','KOL') as capacity FROM  hubkol_user WHERE  id  in (SELECT kol_id FROM hubkol_carefor WHERE hub_id = $this->uid)")->asArray()->all();
+           $data =   HubkolUser::findBySql("SELECT avatar_url,nick_name,IF(capacity = 1,'HUB','KOL') as capacity FROM  hubkol_user WHERE  id  in(SELECT kol_id FROM hubkol_carefor WHERE hub_id = $this->uid and  status = 1)")->asArray()->all();
        }else{
            //粉丝
-           $data =   HubkolUser::findBySql("SELECT avatar_url,nick_name,IF(capacity = 1,'HUB','KOL') as capacity FROM  hubkol_user WHERE  id in (SELECT kol_id FROM hubkol_carefor WHERE kol_id = $this->uid)")->asArray()->all();
+           $data =   HubkolUser::findBySql("SELECT avatar_url,nick_name,IF(capacity = 1,'HUB','KOL') as capacity FROM  hubkol_user WHERE  id in(SELECT kol_id FROM hubkol_carefor WHERE kol_id = $this->uid  and status = 1)")->asArray()->all();
        }
        return  HttpCode::jsonObj($data,'ok','201');
    }
-
    public function assoc_unique($arr, $key)
     {
         $tmp_arr = array();
