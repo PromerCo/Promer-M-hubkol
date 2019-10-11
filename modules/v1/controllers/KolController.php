@@ -177,7 +177,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                      if ($is_means){
                          $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
                          $invite = $invites['invite'];
-                         $invite = json_decode(json_decode($invite,true));
+                         $invite = json_decode(json_decode($invite,true),true);
                          foreach ($invite as $key =>$value){
                                if ($value['kol_id'] == 18){
                                    return  HttpCode::renderJSON([],'您已经邀请过了','412');
