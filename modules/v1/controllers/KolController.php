@@ -165,46 +165,53 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
             $is_lock = RedisLock::lock($key);
             if ($is_lock){
               try{
-                  //1.HUB身份才可以邀请
-                  //2.资料必须填写
-                  //3.该用户是否邀请过
-                  $userinfo =   HubkolUser::find()->where(['id'=>$uid])->select(['capacity','avatar_url','nick_name'])->asArray()->one();
+                  /*
+                   * 1.HUB身份才可以邀请
+                   * 2.资料必须填写
+                   * 3.该用户是否邀请过
+                  */
+                  //获取用户身份
+                  $userinfo =   HubkolUser::find()->where(['id'=>$uid])->select(['capacity','avatar_url'])->asArray()->one();
+                  //用户身份为HUB
                   if ($userinfo['capacity'] == 1){
-                     $hub_id = HubkolHub::find()->where(['uid'=>$uid])->select(['id'])->asArray()->one()['id'];
-
-
-                     if ($hub_id){
-                         $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
-                         if (!empty($invites['invite'])){
-                             $invite = $invites['invite'];
-                             $invite_data = json_decode(json_decode($invite,true),true);
+                  //HUB用户是否填写资料
+                  $hub_id = HubkolHub::find()->where(['uid'=>$uid])->select(['id'])->asArray()->one()['id'];
+                  if ($hub_id){
+                  $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
+                  //查看邀请人数
+                  if (!empty($invites['invite'])){
+                  $invite = $invites['invite'];
+                  $invite_data = json_decode(json_decode($invite,true),true);
                              foreach ($invite_data as $key =>$value){
                                  if ($value['hub_id'] == $hub_id ){
                                      return  HttpCode::jsonObj([],'您已经邀请过了','412');
                                  }
                              }
-                             $diff = json_decode($invite,true);
-                             $bm = str_replace(array('[',']'), array('', ''), $diff);
+                             $invite_json = json_decode($invite,true);
+                             $bm = str_replace(array('[',']'), array('', ''), $invite_json);
                          }
-
                          //没有邀请 -》 获取HUB 头像和ID
                          $user_kol['avatar_url']  = $userinfo['avatar_url'];
                          $user_kol['hub_id']  = $hub_id;
                          $add_kol = json_encode($user_kol);
-
                          if (!$bm){
                              $json_msg   = '['.$bm.$add_kol.']';
                          }else{
                              $json_msg   = '['.$bm.','.$add_kol.']';
                          }
-
-                         print_r($json_msg);
-
-                         die;
-
-
+                         //更新网红信息
+                         $is_update =   HubkolKol::updateAll(['invite'=>$json_msg,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$kol_id]);
+                         if ($is_update){
+                             RedisLock::unlock($key);  //清空KEY
+                             $transaction->commit();  //提交事务
+                             return  HttpCode::renderJSON($userinfo['avatar_url'],'邀请成功','201');
+                         }else{
+                             RedisLock::unlock($key);  //清空KEY
+                             return  HttpCode::renderJSON([],'邀请失败','416');
+                         }
 
                      }else{
+                   
                          return  HttpCode::renderJSON([],'请先填写资料','412');
                      }
 
@@ -212,14 +219,13 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                          return  HttpCode::renderJSON([],'您不是HUB身份','412');
                   }
 
-
               }catch (\ErrorException $e){
                   $transaction->rollBack();
                   throw $e;
               }
-
             } else{
-                echo '请稍后再试';
+                return  HttpCode::renderJSON([],'请稍后再试','412');
+
             }
 
 
