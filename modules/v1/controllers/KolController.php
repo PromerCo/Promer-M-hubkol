@@ -158,7 +158,7 @@ LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
 WHERE hubkol_kol.id = $pro_id")->asArray()->one();
       //查看是否关注
 
-           $u_id = HubkolKol::find()->where(['uid'=>$pro_id])->select(['uid'])->asArray()->one()['uid'];
+           $u_id = HubkolKol::find()->where(['id'=>$pro_id])->select(['uid'])->asArray()->one()['uid'];
 
             $follow =   HubkolCarefor::find()->where(['kol_id'=>$this->uid,'hub_id'=>$u_id])->select(['status'])->asArray()->one();
             if (empty($follow['status'])){
