@@ -77,30 +77,42 @@ class Common extends Controller
         $time = strtotime($time);
 
         if ($type == 1){
-            $t= time()-$time;
+            $t = time()-$time;
+            $f=array(
+                '31536000'=>'年',
+                '2592000'=>'个月',
+                '604800'=>'星期',
+                '86400'=>'天',
+                '3600'=>'小时',
+                '60'=>'分钟',
+                '1'=>'秒'
+            );
+            foreach ($f as $k=>$v)    {
+                if (0 !=$c=floor($t/(int)$k)) {
+                    return $c.$v;
+                }
+            }
         }else{
-            $t= $time-time();
+            $t = $time-time();
             if ($t<0){
                 return '活动已结束';
             }
-        }
-
-
-
-        $f=array(
-            '31536000'=>'年',
-            '2592000'=>'个月',
-            '604800'=>'星期',
-            '86400'=>'天',
-            '3600'=>'小时',
-            '60'=>'分钟',
-            '1'=>'秒'
-        );
-        foreach ($f as $k=>$v)    {
-            if (0 !=$c=floor($t/(int)$k)) {
-                return $c.$v.'后结束';
+            $f=array(
+                '31536000'=>'年',
+                '2592000'=>'个月',
+                '604800'=>'星期',
+                '86400'=>'天',
+                '3600'=>'小时',
+                '60'=>'分钟',
+                '1'=>'秒'
+            );
+            foreach ($f as $k=>$v)    {
+                if (0 !=$c=floor($t/(int)$k)) {
+                    return $c.$v.'后结束';
+                }
             }
         }
+
     }
 
     /*
@@ -123,6 +135,18 @@ class Common extends Controller
             }
         }
         return false;
+    }
+
+
+    /*
+     * 获取ToKen
+     */
+    public static function getAccessToken ($appid, $appsecret) {
+        $url='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$appid.'&secret='.$appsecret;
+        $html = file_get_contents($url);
+        $output = json_decode($html, true);
+        $access_token = $output['access_token'];
+        return $access_token;
     }
 
 }

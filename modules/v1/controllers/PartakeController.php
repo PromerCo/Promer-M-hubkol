@@ -4,11 +4,13 @@ namespace mhubkol\modules\v1\controllers;
 use mhubkol\common\components\RedisLock;
 use mhubkol\common\helps\Common;
 use mhubkol\common\helps\HttpCode;
+use mhubkol\common\services\TokenService;
 use mhubkol\modules\v1\models\HubkolUser;
 use mhubkol\modules\v1\models\HubkolHub;
 use mhubkol\modules\v1\models\HubkolKol;
 use mhubkol\modules\v1\models\HubkolPull;
 use mhubkol\modules\v1\models\HubkolPush;
+use mhubkol\modules\v1\services\TmplService;
 
 /**
  * Site controller
@@ -50,15 +52,15 @@ class PartakeController extends BaseController
                 $enroll_number =$data['enroll_number']; //入伍人数
                 $convene =$data['convene']; //召集人数
                //查看用户是否填写资料
-               $means =    HubkolKol::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one();
+               $means =    HubkolKol::find()->where(['uid'=>$this->uid])->select(['id','wechat'])->asArray()->one();
                if (!$means){
-                   return  HttpCode::renderJSON([],'请先填写资料','406');
+                   return  HttpCode::renderJSON([],'请先填写资料','417');
                }
               //假如用户填写资料
               $is_pull =   HubkolPull::find()->where(['push_id'=>$push_id,'kol_id'=>$means['id']])->asArray()->count();
                $material =  HubkolUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();  //身份标识（0 未填写资料 1 HUB 2KOL
                if ($material['capacity'] != 2){
-                   return  HttpCode::renderJSON([],'您不是KOL身份','412');
+                   return  HttpCode::renderJSON([],'您不是KOL身份','417');
                }
                if (!$is_pull){
                     \Yii::$app->db->createCommand()->insert('hubkol_pull', [
@@ -77,34 +79,32 @@ class PartakeController extends BaseController
 LEFT JOIN hubkol_pull ON hubkol_push.id = hubkol_pull.push_id
 LEFT JOIN hubkol_kol ON   hubkol_kol.id = hubkol_pull.kol_id
 WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->one();
-
               if ($enrolls['is_enroll']){
                   RedisLock::unlock($key);  //清空KEY
                   return  HttpCode::renderJSON([],'您已经报名','200');
               }else{
-                  $user_info = HubkolUser::find()->where(['id'=>$this->uid])->select(['avatar_url','nick_name','gender','phone_number'])->asArray()->one();
+                  $user_info = HubkolUser::find()->where(['id'=>$this->uid])->select(['avatar_url','nick_name','gender'])->asArray()->one();
+                  //微信号
                   $enroll_add['avatar_url'] =  $user_info['avatar_url'];
                   $enroll_add['nick_name'] =  $user_info['nick_name'];
-                  $enroll_add['gender'] =  $user_info['gender'];
-                  $enroll_add['phone_number'] =  $user_info['phone_number'];
+                  $enroll_add['wechat'] =   $means['wechat'];
                   $enroll_add['kol_id'] =  HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one()['id'];
                   $enroll_add = json_encode($enroll_add);
                   $bm         = json_decode($enroll,true);
-
                   $bm = str_replace(array('[',']'), array('', ''), $bm);
                   if (!$bm){
                       $json_msg   = '['.$bm.$enroll_add.']';
                   }else{
                       $json_msg   = '['.$bm.','.$enroll_add.']';
                   }
-
                   //更新报名信息 (后期替换关联更新)
                   $push_update =   HubkolPush::updateAll(['enroll_number'=>$enroll_number+1,'enroll'=>$json_msg,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$push_id]);
                   $pull_update =    HubkolPull::updateAll(['is_enroll'=>'1','is_success'=>'1','update_time'=>date('Y-m-d H:i:s',time())],['id'=>$enrolls['pull_id']]);
                   if ($push_update && $pull_update){
-                      RedisLock::unlock($key);  //清空KEY
-                      $transaction->commit();  //提交事务
-                      return  HttpCode::renderJSON($user_info['avatar_url'],'报名成功','201');
+                          RedisLock::unlock($key);  //清空KEY
+                          $transaction->commit();  //提交事务
+                          return  HttpCode::renderJSON($user_info['avatar_url'],'报名成功','201');
+
                   }else{
                       RedisLock::unlock($key);  //清空KEY
                       return  HttpCode::renderJSON([],'报名失败','416');

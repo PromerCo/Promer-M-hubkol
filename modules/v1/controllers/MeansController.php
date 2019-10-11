@@ -1,5 +1,6 @@
 <?php
 namespace mhubkol\modules\v1\controllers;
+use backend\models\HubKolPush;
 use mhubkol\common\helps\HttpCode;
 use mhubkol\modules\v1\models\HubkolHub;
 use mhubkol\modules\v1\models\HubkolKol;
@@ -173,7 +174,40 @@ class MeansController extends BaseController
          }
     }else{
             return  HttpCode::renderJSON([],'请求方式出错','418');
+    }
+    }
 
+    /*
+     * 查看报名的人信息
+     */
+    public function actionEnroll(){
+
+        if ((\Yii::$app->request->isPost)) {
+            $push_id = \Yii::$app->request->post('push_id')??35;
+            $uid = $this->uid; //获取用户ID
+            $types = HubkolUser::find()->where(['id' => $uid])->select('capacity')->asArray()->one(); //查询类型(状态)
+            if ($types['capacity'] == 1) {
+                //HUB
+                $bystander = HubKolPush::find()->where(['id' => $push_id])->select(['enroll'])->asArray()->one();
+                if (empty($bystander['enroll'])){
+                    $enroll = [];
+                }else{
+                    $enroll = json_decode(json_decode($bystander['enroll'], true), true);
+                }
+                return HttpCode::renderJSON($enroll, 'ok', '201');
+            } else {
+                //KOL
+                $bystander = HubkolKol::find()->where(['id' => $push_id])->select(['enroll'])->asArray()->one();
+
+
+                return HttpCode::renderJSON([], '请求类型出错', '418');
+            }
+        }else{
+            return HttpCode::renderJSON([], '请求类型出错', '418');
+        }
     }
-    }
+
+
+
+
 }
