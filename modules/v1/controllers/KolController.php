@@ -3,6 +3,7 @@ namespace mhubkol\modules\v1\controllers;
 
 use mhubkol\common\components\RedisLock;
 use mhubkol\common\helps\HttpCode;
+use mhubkol\modules\v1\models\HubkolCarefor;
 use mhubkol\modules\v1\models\HubkolHub;
 use mhubkol\modules\v1\models\HubkolKol;
 use mhubkol\modules\v1\models\HubkolPlatform;
@@ -204,8 +205,6 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                          //更新网红信息
                          $is_update =   HubkolKol::updateAll(['invite'=>$json_msg,'invite_number'=>$invites['invite_number']+1,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$kol_id]);
                         //邀请人数
-
-
                          if ($is_update){
                              RedisLock::unlock($key);  //清空KEY
                              $transaction->commit();  //提交事务
@@ -214,37 +213,79 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                              RedisLock::unlock($key);  //清空KEY
                              return  HttpCode::renderJSON([],'邀请失败','416');
                          }
-
                      }else{
 
                          return  HttpCode::renderJSON([],'请先填写资料','412');
                      }
-
                   }else{
                          return  HttpCode::renderJSON([],'您不是HUB身份','412');
                   }
-
               }catch (\ErrorException $e){
                   $transaction->rollBack();
                   throw $e;
               }
             } else{
                 return  HttpCode::renderJSON([],'请稍后再试','412');
-
             }
-
-
-
-
-
-
         }else{
             return  HttpCode::jsonObj([],'请求方式出错','418');
         }
-
     }
 
-
+   /*
+     * 关注
+   */
+   public function actionFollow(){
+       if ((\Yii::$app->request->isPost)) {
+           /*
+            * 1.获取该用户角色
+            * 2.查看是否填写资料
+            * 3.查看是否关注
+            */
+           $kol_id  = \Yii::$app->request->post('kol_id');
+           $status = \Yii::$app->request->post('status')??1;  //0未关注  1已关注
+           if (empty($kol_id)){
+               return  HttpCode::renderJSON([],'参数不能为空','406');
+           }
+           //获取用户身份
+           $userinfo =   HubkolUser::find()->where(['id'=>$this->uid])->select(['capacity','avatar_url'])->asArray()->one();
+           //用户身份为HUB
+           if ($userinfo['capacity'] == 1){
+               $transaction = \Yii::$app->db->beginTransaction();
+               $hub_id = HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one()['id'];
+               if ($hub_id){
+                   //查看是否关注过
+                   $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$kol_id,'hub_id'=>$hub_id])->select(['status'])->asArray()->one();
+                   if (empty($follow_status['status'])){
+                   //没有关注过(插入)
+                       $is_success  =   \Yii::$app->db->createCommand()->insert('hubkol_carefor', [
+                           'status' => $status,
+                           'kol_id' => $kol_id,
+                           'hub_id'=>$hub_id
+                       ])->execute();
+                       if ($is_success){
+                           $transaction->commit();
+                           return  HttpCode::renderJSON($status,'ok','201');
+                       }else{
+                           return  HttpCode::renderJSON([],'error','412');
+                       }
+                   }else{
+                        $cancel_follow =    HubkolCarefor::updateAll(['status'=>$status,'update_time'=>date('Y-m-d H:i:s',time())],['kol_id'=>$kol_id,'hub_id'=>$hub_id]);
+                        if ($cancel_follow){
+                            $transaction->commit();
+                            return  HttpCode::renderJSON($status,'ok','201');
+                        }else{
+                            return  HttpCode::renderJSON([],'error','412');
+                        }
+                   }
+               }
+           }else{
+               return  HttpCode::jsonObj([],'只有HUB身份才可以关注哦','416');
+           }
+       }else{
+           return  HttpCode::jsonObj([],'请求方式出错','418');
+       }
+   }
 
    public function assoc_unique($arr, $key)
     {
