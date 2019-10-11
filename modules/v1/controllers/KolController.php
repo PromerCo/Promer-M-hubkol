@@ -168,10 +168,8 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   //1.HUB身份才可以邀请
                   //2.资料必须填写
                   //3.该用户是否邀请过
-
-                  $capacitys =   HubkolUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();
-
-                  if ($capacitys['capacity'] == 1){
+                  $userinfo =   HubkolUser::find()->where(['id'=>$uid])->select(['capacity','avatar_url','nick_name'])->asArray()->one();
+                  if ($userinfo['capacity'] == 1){
                      $is_means = HubkolHub::find()->where(['uid'=>$uid])->count();
 
                      if ($is_means){
@@ -183,8 +181,13 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                                    return  HttpCode::jsonObj([],'您已经邀请过了','412');
                                }
                          }
+                         //没有邀请 -》 获取HUB 头像和ID
+                         $add_kol = json_encode($userinfo);
 
-                         print_r($invite);
+                         $bm = str_replace(array('[',']'), array('', ''), $invite);
+
+                         print_r($add_kol);
+                         print_r($bm);
                          die;
 
 
