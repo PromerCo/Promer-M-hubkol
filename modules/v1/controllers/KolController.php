@@ -272,15 +272,14 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                if ($hub_id['id']){
                    //查看是否关注过
                    $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$kol_id,'hub_id'=>$hub_id['id']])->select(['status'])->asArray()->one();
-                   print_r($follow_status);
-                   die;
+
 
                    if (!$follow_status){
                    //没有关注过(插入)
                        $is_success  =   \Yii::$app->db->createCommand()->insert('hubkol_carefor', [
                            'status' => $status,
                            'kol_id' => $kol_id,
-                           'hub_id'=>$hub_id
+                           'hub_id'=>$hub_id['id']
                        ])->execute();
                        if ($is_success){
                            $transaction->commit();
