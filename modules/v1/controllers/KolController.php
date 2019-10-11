@@ -188,7 +188,9 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                          }
 
                          //没有邀请 -》 获取HUB 头像和ID
-                         $add_kol = json_encode($userinfo);
+                         $user_kol['avatar_url']  = $userinfo['avatar_url'];
+                         $user_kol['hub_id']  = $hub_id;
+                         $add_kol = json_encode($user_kol);
 
                          if (!$bm){
                              $json_msg   = '['.$bm.$add_kol.']';
