@@ -141,7 +141,7 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
       if (empty($pro_id)){
           return  HttpCode::jsonObj([],'参数不能为空','412');
       }
-      $data   =  HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.city,hubkol_kol.mcn_organization,hubkol_kol.tags,
+      $data   =  HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.city,hubkol_kol.mcn_organization,hubkol_kol.tags,hubkol_kol.id
 hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.`profile` FROM hubkol_kol 
 LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
 LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
@@ -211,7 +211,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                          }
 
                      }else{
-                   
+
                          return  HttpCode::renderJSON([],'请先填写资料','412');
                      }
 
