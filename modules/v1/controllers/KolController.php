@@ -141,7 +141,7 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
       if (empty($pro_id)){
           return  HttpCode::jsonObj([],'参数不能为空','412');
       }
-      $data   =  HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.city,hubkol_kol.mcn_organization,hubkol_kol.tags,hubkol_kol.id,
+      $data   =  HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.city,hubkol_kol.mcn_organization,hubkol_kol.tags,hubkol_kol.id,hubkol_kol.invite,
 hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.`profile` FROM hubkol_kol 
 LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
 LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
@@ -155,7 +155,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
     */
     public function actionInvite(){
         if ((\Yii::$app->request->isPost)) {
-            $kol_id  = \Yii::$app->request->post('kol_id')??38;
+            $kol_id  = \Yii::$app->request->post('kol_id');
             $uid = $this->uid;
             $transaction = \Yii::$app->db->beginTransaction();
             if (empty($kol_id)){
