@@ -175,20 +175,29 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
 
                      if ($hub_id){
                          $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
-                         $invite = $invites['invite'];
-                         $invite = json_decode(json_decode($invite,true),true);
-                         foreach ($invite as $key =>$value){
-                               if ($value['kol_id'] == 17 ){
-                                   return  HttpCode::jsonObj([],'您已经邀请过了','412');
-                               }
+                         if (!empty($invites['invite'])){
+                             $invite = $invites['invite'];
+                             $invite = json_decode(json_decode($invite,true),true);
+                             foreach ($invite as $key =>$value){
+                                 if ($value['hub_id'] == $hub_id ){
+                                     return  HttpCode::jsonObj([],'您已经邀请过了','412');
+                                 }
+                             }
+                             $diff = json_decode($invite,true);
+                             $bm = str_replace(array('[',']'), array('', ''), $diff);
                          }
+
                          //没有邀请 -》 获取HUB 头像和ID
                          $add_kol = json_encode($userinfo);
 
-                         $bm = str_replace(array('[',']'), array('', ''), $invite);
+                         if (!$bm){
+                             $json_msg   = '['.$bm.$add_kol.']';
+                         }else{
+                             $json_msg   = '['.$bm.','.$add_kol.']';
+                         }
 
-                         print_r($add_kol);
-                         print_r($bm);
+                         print_r($json_msg);
+
                          die;
 
 
