@@ -143,7 +143,7 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
       if (empty($pro_id)){
           return  HttpCode::jsonObj([],'参数不能为空','412');
       }
-      $data   =  HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.city,hubkol_kol.mcn_organization,hubkol_kol.tags,hubkol_kol.id,hubkol_kol.invite,hubkol_kol.invite_number,
+      $data   =  HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.city,hubkol_kol.mcn_organization,hubkol_kol.tags,hubkol_kol.id,hubkol_kol.invite,hubkol_kol.invite_number,hubkol_user.id as user_id,
 hubkol_user.nick_name,hubkol_follow.title,hubkol_kol.`profile` FROM hubkol_kol 
 LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
 LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
@@ -261,6 +261,8 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
             * 3.查看是否关注
             */
            $kol_id  = \Yii::$app->request->post('kol_id');
+
+
            $status = \Yii::$app->request->post('status')??1;  //0未关注  1已关注
            if (empty($kol_id)){
                return  HttpCode::renderJSON([],'参数不能为空','406');
@@ -271,11 +273,9 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
            if ($userinfo['capacity'] == 1){
                $transaction = \Yii::$app->db->beginTransaction();
                $hub_id = HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one();
-
                if ($hub_id['id']){
                    //查看是否关注过
                    $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$kol_id,'hub_id'=>$hub_id['id']])->select(['status'])->asArray()->one();
-
 
                    if (!$follow_status){
                    //没有关注过(插入)
