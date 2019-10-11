@@ -235,7 +235,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                          return  HttpCode::renderJSON([],'请先填写资料','412');
                      }
                   }else{
-                  、
+            
                          return  HttpCode::renderJSON([],'您不是HUB身份','412');
                   }
               }catch (\ErrorException $e){
