@@ -156,7 +156,7 @@ LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
 WHERE hubkol_kol.id = $pro_id")->asArray()->one();
       //查看是否关注
         $capacity =   HubkolUser::find()->where(['id'=>$this->uid])->select(['capacity'])->asArray()->one()['capacity'];
-        if ($capacity == 1){
+//        if ($capacity == 1){
             $hub_id = HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one();
             if (!empty($hub_id['id'])){
             $follow =   HubkolCarefor::find()->where(['kol_id'=>$pro_id,'hub_id'=>$hub_id['id']])->select(['status'])->asArray()->one();
@@ -166,9 +166,9 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                 $data['status'] = $follow['status'];
             }
             }
-        }else{
-            $data['status'] = 0;
-        }
+//        }else{
+//            $data['status'] = 0;
+//        }
        $data['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$data['tags'].")")->asArray()->all();
         return  HttpCode::renderJSON($data,'ok','201');
     }
