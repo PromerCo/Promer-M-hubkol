@@ -304,7 +304,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                             }else{
                                 HubkolKol::updateAll(['follow_number'=>$follow_number-1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
                             }
-                            die;
+                     
                             $transaction->commit();
                             return  HttpCode::renderJSON($status,'ok','201');
                         }else{
