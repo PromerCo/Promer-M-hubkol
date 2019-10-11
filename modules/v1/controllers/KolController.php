@@ -254,7 +254,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
    public function actionFollow(){
        if ((\Yii::$app->request->isPost)) {
            /*
-            * 1.获取该用户角色
+            * 1.获取该用户身份
             * 2.查看是否填写资料
             * 3.查看是否关注
             */
@@ -268,13 +268,11 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
            //用户身份为HUB
            if ($userinfo['capacity'] == 1){
                $transaction = \Yii::$app->db->beginTransaction();
-               $hub_id = HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one()['id'];
-               if ($hub_id){
+               $hub_id = HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one();
+               if ($hub_id['id']){
                    //查看是否关注过
-                   $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$kol_id,'hub_id'=>$hub_id])->select(['status'])->asArray()->one();
-
-                   if (empty($follow_status['status'])){
-
+                   $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$kol_id,'hub_id'=>$hub_id['id']])->select(['status'])->asArray()->one();
+                   if (!$follow_status || empty($follow_status)){
                    //没有关注过(插入)
                        $is_success  =   \Yii::$app->db->createCommand()->insert('hubkol_carefor', [
                            'status' => $status,
