@@ -277,7 +277,6 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
           //查看网红关注总人数
           $follow_number = HubkolKol::find()->where(['uid'=>$this->uid])->select(['follow_number'])->asArray()->one()['follow_number'];
 
-          print_r($follow_number);
 
           if (!$follow_status){
                    //没有关注过(插入)
@@ -299,10 +298,8 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                         $cancel_follow =    HubkolCarefor::updateAll(['status'=>$status,'update_time'=>date('Y-m-d H:i:s',time())],['kol_id'=>$user_id,'hub_id'=>$this->uid]);
                         if ($cancel_follow){
 
-                            print_r($follow_number);
 
-
-                            if ($status == 1){
+                            if ($status == 0){
                                 HubkolKol::updateAll(['follow_number'=>$follow_number+1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
                             }else{
                                 HubkolKol::updateAll(['follow_number'=>$follow_number-1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
