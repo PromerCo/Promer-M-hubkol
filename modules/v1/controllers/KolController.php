@@ -159,7 +159,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
 
            $u_id = HubkolKol::find()->where(['id'=>$pro_id])->select(['uid'])->asArray()->one()['uid'];
 
-            $follow =   HubkolCarefor::find()->where(['kol_id'=>45,'hub_id'=>49])->select(['status'])->asArray()->one();
+            $follow =   HubkolCarefor::find()->where(['kol_id'=>$u_id,'hub_id'=>$this->uid])->select(['status'])->asArray()->one();
             if (empty($follow['status'])){
                 $data['status'] = 0;
             }else{
