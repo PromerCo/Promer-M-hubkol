@@ -293,12 +293,8 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                            return  HttpCode::renderJSON([],'error','412');
                        }
                    }else{
-
                         $cancel_follow =    HubkolCarefor::updateAll(['status'=>$status,'update_time'=>date('Y-m-d H:i:s',time())],['kol_id'=>$user_id,'hub_id'=>$this->uid]);
                         if ($cancel_follow){
-
-
-
                             if ($status == 1){
                                 HubkolKol::updateAll(['follow_number'=>intval($follow_number)+1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
                             }else{
@@ -314,6 +310,21 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
        }else{
            return  HttpCode::renderJSON([],'请求方式出错','418');
        }
+   }
+
+   /*
+    * 我关注（粉丝）
+    */
+   public function actionFollowUser(){
+       $type = \Yii::$app->request->post('type')??0;
+       if ($type == 0){
+           //关注
+           $data =   HubkolUser::findBySql("SELECT avatar_url,nick_name,IF(capacity = 1,'HUB','KOL') as capacity FROM  hubkol_user WHERE  id =(SELECT kol_id FROM hubkol_carefor WHERE hub_id = $this->uid)")->asArray()->all();
+       }else{
+           //粉丝
+           $data =   HubkolUser::findBySql("SELECT avatar_url,nick_name,IF(capacity = 1,'HUB','KOL') as capacity FROM  hubkol_user WHERE  id =(SELECT kol_id FROM hubkol_carefor WHERE kol_id = $this->uid)")->asArray()->all();
+       }
+       return  HttpCode::renderJSON($data,'ok','201');
    }
 
    public function assoc_unique($arr, $key)
