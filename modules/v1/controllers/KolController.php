@@ -170,14 +170,14 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   //3.该用户是否邀请过
                   $userinfo =   HubkolUser::find()->where(['id'=>$uid])->select(['capacity','avatar_url','nick_name'])->asArray()->one();
                   if ($userinfo['capacity'] == 1){
-                     $is_means = HubkolHub::find()->where(['uid'=>$uid])->count();
+                     $hub_id = HubkolHub::find()->where(['uid'=>$uid])->select(['id'])->asArray()->one()['id'];
 
-                     if ($is_means){
+                     if ($hub_id){
                          $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
                          $invite = $invites['invite'];
                          $invite = json_decode(json_decode($invite,true),true);
                          foreach ($invite as $key =>$value){
-                               if ($value['kol_id'] == 18){
+                               if ($value['kol_id'] == $hub_id){
                                    return  HttpCode::jsonObj([],'您已经邀请过了','412');
                                }
                          }
