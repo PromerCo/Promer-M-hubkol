@@ -279,6 +279,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
 
 
           if (!$follow_status){
+
                    //没有关注过(插入)
                        $is_success  =   \Yii::$app->db->createCommand()->insert('hubkol_carefor', [
                            'status' => $status,
@@ -298,6 +299,9 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                         $cancel_follow =    HubkolCarefor::updateAll(['status'=>$status,'update_time'=>date('Y-m-d H:i:s',time())],['kol_id'=>$user_id,'hub_id'=>$this->uid]);
                         if ($cancel_follow){
 
+print_r($status);
+print_r($follow_number);
+die;
 
                             if ($status == 1){
                                 HubkolKol::updateAll(['follow_number'=>intval($follow_number)+1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
