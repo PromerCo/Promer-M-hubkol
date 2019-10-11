@@ -118,7 +118,7 @@ LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hub
                 $data =    HubkolPush::findBySql("SELECT  hubkol_push.id,hubkol_push.title,hubkol_platform.logo,hubkol_push.create_date FROM  hubkol_push
 LEFT JOIN  hubkol_hub ON hubkol_push.hub_id = hubkol_hub.id
 LEFT JOIN  hubkol_platform ON hubkol_platform.id = hubkol_push.platform
-WHERE hubkol_hub.uid =$uid AND hubkol_push.expire_time > NOW()
+WHERE hubkol_hub.uid =$uid 
 ORDER BY hubkol_push.create_date desc")->asArray()->all();
                 return  HttpCode::renderJSON($data,'ok','201');
             break;
