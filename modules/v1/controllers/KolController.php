@@ -145,7 +145,9 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
      * KOL (网红) 详情
      */
     public function actionKolpro(){
-      $pro_id =  \Yii::$app->request->post('pro_id');
+      $pro_id =  \Yii::$app->request->post('pro_id'); //kol
+
+
       if (empty($pro_id)){
           return  HttpCode::jsonObj([],'参数不能为空','412');
       }
@@ -155,11 +157,11 @@ LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
 LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
 WHERE hubkol_kol.id = $pro_id")->asArray()->one();
       //查看是否关注
-        $capacity =   HubkolUser::find()->where(['id'=>$this->uid])->select(['capacity'])->asArray()->one()['capacity'];
+//       $capacity =   HubkolUser::find()->where(['id'=>$this->uid])->select(['capacity'])->asArray()->one()['capacity'];
 //        if ($capacity == 1){
             $hub_id = HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one();
             if (!empty($hub_id['id'])){
-            $follow =   HubkolCarefor::find()->where(['kol_id'=>$pro_id,'hub_id'=>$hub_id['id']])->select(['status'])->asArray()->one();
+            $follow =   HubkolCarefor::find()->where(['kol_id'=>$this->uid,'hub_id'=>$hub_id['id']])->select(['status'])->asArray()->one();
             if (empty($follow['status'])){
                 $data['status'] = 0;
             }else{
