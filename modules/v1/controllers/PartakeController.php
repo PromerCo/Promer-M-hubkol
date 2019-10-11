@@ -53,7 +53,7 @@ class PartakeController extends BaseController
                 $enroll_number =$data['enroll_number']; //入伍人数
                 $convene =$data['convene']; //召集人数
                //查看用户是否填写资料
-               $means =    HubkolKol::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one();
+               $means =    HubkolKol::find()->where(['uid'=>$this->uid])->select(['id','wechat'])->asArray()->one();
                if (!$means){
                    return  HttpCode::renderJSON([],'请先填写资料','406');
                }
@@ -85,11 +85,13 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
                   RedisLock::unlock($key);  //清空KEY
                   return  HttpCode::renderJSON([],'您已经报名','200');
               }else{
-                  $user_info = HubkolUser::find()->where(['id'=>$this->uid])->select(['avatar_url','nick_name','gender','phone_number'])->asArray()->one();
+                  $user_info = HubkolUser::find()->where(['id'=>$this->uid])->select(['avatar_url','nick_name','gender'])->asArray()->one();
+                  //微信号
+
                   $enroll_add['avatar_url'] =  $user_info['avatar_url'];
                   $enroll_add['nick_name'] =  $user_info['nick_name'];
-                  $enroll_add['gender'] =  $user_info['gender'];
-                  $enroll_add['phone_number'] =  $user_info['phone_number'];
+                  $enroll_add['wechat'] =   $means['wechat'];
+
                   $enroll_add['kol_id'] =  HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one()['id'];
                   $enroll_add = json_encode($enroll_add);
                   $bm         = json_decode($enroll,true);
