@@ -71,7 +71,7 @@ hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
 LEFT JOIN hubkol_user ON hubkol_kol.uid = hubkol_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
 LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform
- WHERE hubkol_user.id  != $this->uid
+ WHERE hubkol_user.id  != $this->uid ORDER BY hubkol_kol.create_date DESC
  LIMIT $start_page,5")->asArray()->all();
             }else{
                 $result = HubkolKol::findBySql("SELECT hubkol_user.avatar_url,hubkol_kol.tags,hubkol_kol.id,
@@ -80,7 +80,7 @@ hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
 LEFT JOIN hubkol_user ON hubkol_kol.uid = hubkol_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
 LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id
- AND   hubkol_user.id  != $this->uid
+ AND   hubkol_user.id  != $this->uid ORDER BY hubkol_kol.create_date DESC
  LIMIT $start_page,5")->asArray()->all();
             }
 
@@ -100,7 +100,7 @@ hubkol_platform.logo,hubkol_platform.id as platform_id  FROM  hubkol_kol
 LEFT JOIN hubkol_user ON hubkol_kol.uid = hubkol_user.id
 LEFT JOIN  hubkol_follow ON  hubkol_follow.id = hubkol_kol.follow_level
 LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform where  hubkol_kol.platform = $platform_id 
-AND   hubkol_user.id  != $this->uid
+AND   hubkol_user.id  != $this->uid ORDER BY hubkol_kol.create_date DESC
 LIMIT $start_page,5")->asArray()->all();
         }
         foreach ($result as $key=>$value){
@@ -146,7 +146,6 @@ ORDER BY hubkol_push.create_date desc")->asArray()->all();
      */
     public function actionKolpro(){
       $pro_id =  \Yii::$app->request->post('pro_id'); //kol
-
       if (empty($pro_id)){
           return  HttpCode::jsonObj([],'参数不能为空','412');
       }
@@ -156,18 +155,15 @@ LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
 LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
 WHERE hubkol_kol.id = $pro_id")->asArray()->one();
       //查看是否关注
-
-           $u_id = HubkolKol::find()->where(['id'=>$pro_id])->select(['uid'])->asArray()->one()['uid'];
-
-            $follow =   HubkolCarefor::find()->where(['kol_id'=>$u_id,'hub_id'=>$this->uid])->select(['status'])->asArray()->one();
-            if (empty($follow['status'])){
+      $u_id = HubkolKol::find()->where(['id'=>$pro_id])->select(['uid'])->asArray()->one()['uid'];
+      $follow =   HubkolCarefor::find()->where(['kol_id'=>$u_id,'hub_id'=>$this->uid])->select(['status'])->asArray()->one();
+      if (empty($follow['status'])){
                 $data['status'] = 0;
-            }else{
+       }else{
                 $data['status'] = $follow['status'];
-            }
-
+       }
        $data['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$data['tags'].")")->asArray()->all();
-        return  HttpCode::renderJSON($data,'ok','201');
+       return  HttpCode::renderJSON($data,'ok','201');
     }
 
     /*
