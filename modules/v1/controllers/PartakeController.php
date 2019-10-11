@@ -36,7 +36,6 @@ class PartakeController extends BaseController
     public function actionEnroll(){
     if ((\Yii::$app->request->isPost)) {
             $data  = \Yii::$app->request->post();
-
             $uid = $this->uid;
             $transaction = \Yii::$app->db->beginTransaction();
             if (empty($data['push_id'])){
@@ -55,13 +54,13 @@ class PartakeController extends BaseController
                //查看用户是否填写资料
                $means =    HubkolKol::find()->where(['uid'=>$this->uid])->select(['id','wechat'])->asArray()->one();
                if (!$means){
-                   return  HttpCode::renderJSON([],'请先填写资料','406');
+                   return  HttpCode::renderJSON([],'请先填写资料','417');
                }
               //假如用户填写资料
               $is_pull =   HubkolPull::find()->where(['push_id'=>$push_id,'kol_id'=>$means['id']])->asArray()->count();
                $material =  HubkolUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();  //身份标识（0 未填写资料 1 HUB 2KOL
                if ($material['capacity'] != 2){
-                   return  HttpCode::renderJSON([],'您不是KOL身份','412');
+                   return  HttpCode::renderJSON([],'您不是KOL身份','417');
                }
                if (!$is_pull){
                     \Yii::$app->db->createCommand()->insert('hubkol_pull', [
@@ -80,29 +79,24 @@ class PartakeController extends BaseController
 LEFT JOIN hubkol_pull ON hubkol_push.id = hubkol_pull.push_id
 LEFT JOIN hubkol_kol ON   hubkol_kol.id = hubkol_pull.kol_id
 WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->one();
-
               if ($enrolls['is_enroll']){
                   RedisLock::unlock($key);  //清空KEY
                   return  HttpCode::renderJSON([],'您已经报名','200');
               }else{
                   $user_info = HubkolUser::find()->where(['id'=>$this->uid])->select(['avatar_url','nick_name','gender'])->asArray()->one();
                   //微信号
-
                   $enroll_add['avatar_url'] =  $user_info['avatar_url'];
                   $enroll_add['nick_name'] =  $user_info['nick_name'];
                   $enroll_add['wechat'] =   $means['wechat'];
-
                   $enroll_add['kol_id'] =  HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one()['id'];
                   $enroll_add = json_encode($enroll_add);
                   $bm         = json_decode($enroll,true);
-
                   $bm = str_replace(array('[',']'), array('', ''), $bm);
                   if (!$bm){
                       $json_msg   = '['.$bm.$enroll_add.']';
                   }else{
                       $json_msg   = '['.$bm.','.$enroll_add.']';
                   }
-
                   //更新报名信息 (后期替换关联更新)
                   $push_update =   HubkolPush::updateAll(['enroll_number'=>$enroll_number+1,'enroll'=>$json_msg,'update_time'=>date('Y-m-d H:i:s',time())],['id'=>$push_id]);
                   $pull_update =    HubkolPull::updateAll(['is_enroll'=>'1','is_success'=>'1','update_time'=>date('Y-m-d H:i:s',time())],['id'=>$enrolls['pull_id']]);
