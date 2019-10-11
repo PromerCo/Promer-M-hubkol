@@ -274,6 +274,9 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
           $transaction = \Yii::$app->db->beginTransaction();
           //查看是否关注过
           $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$user_id,'hub_id'=>$this->uid])->select(['status'])->asArray()->one();
+          //查看网红关注总人数
+          $follow_number = HubkolKol::find()->where(['uid'=>$this->uid])->select(['follow_number'])->asArray()->one()['follow_number'];
+
           if (!$follow_status){
                    //没有关注过(插入)
                        $is_success  =   \Yii::$app->db->createCommand()->insert('hubkol_carefor', [
@@ -281,13 +284,21 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                            'kol_id' => $user_id,
                            'hub_id'=>$this->uid
                        ])->execute();
+
                        if ($is_success){
+                           HubkolKol::updateAll(['follow_number'=>$follow_number+1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
                            $transaction->commit();
                            return  HttpCode::renderJSON($status,'create is success','201');
                        }else{
                            return  HttpCode::renderJSON([],'error','412');
                        }
                    }else{
+
+                      if ($status == 1){
+                          HubkolKol::updateAll(['follow_number'=>$follow_number+1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
+                      }else{
+                          HubkolKol::updateAll(['follow_number'=>$follow_number-1,'update_time'=>date('Y-m-d H:i:s',time())],['uid'=>$user_id]);
+                      }
                         $cancel_follow =    HubkolCarefor::updateAll(['status'=>$status,'update_time'=>date('Y-m-d H:i:s',time())],['kol_id'=>$user_id,'hub_id'=>$this->uid]);
                         if ($cancel_follow){
                             $transaction->commit();
