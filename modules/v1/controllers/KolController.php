@@ -260,31 +260,21 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
             * 2.查看是否填写资料
             * 3.查看是否关注
             */
-           $kol_id  = \Yii::$app->request->post('kol_id');
-
-
+           $user_id  = \Yii::$app->request->post('user_id');  //关注人ID
            $status = \Yii::$app->request->post('status')??1;  //0未关注  1已关注
-           if (empty($kol_id)){
+           if (empty($user_id)){
                return  HttpCode::renderJSON([],'参数不能为空','406');
            }
-           //获取用户身份
-           $userinfo =   HubkolUser::find()->where(['id'=>$this->uid])->select(['capacity','avatar_url'])->asArray()->one();
-           //用户身份为HUB
-           if ($userinfo['capacity'] == 1){
-               $transaction = \Yii::$app->db->beginTransaction();
-               $hub_id = HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one();
-               if ($hub_id['id']){
-                   //查看是否关注过
-                   $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$kol_id,'hub_id'=>$hub_id['id']])->select(['status'])->asArray()->one();
-
-                   if (!$follow_status){
+          $transaction = \Yii::$app->db->beginTransaction();
+          //查看是否关注过
+          $follow_status =   HubkolCarefor::find()->where(['kol_id'=>$user_id,'hub_id'=>$this->uid])->select(['status'])->asArray()->one();
+          if (!$follow_status){
                    //没有关注过(插入)
                        $is_success  =   \Yii::$app->db->createCommand()->insert('hubkol_carefor', [
                            'status' => $status,
-                           'kol_id' => $kol_id,
-                           'hub_id'=>$hub_id['id']
+                           'kol_id' => $user_id,
+                           'hub_id'=>$this->uid
                        ])->execute();
-
                        if ($is_success){
                            $transaction->commit();
                            return  HttpCode::renderJSON($status,'create is success','201');
@@ -292,7 +282,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                            return  HttpCode::renderJSON([],'error','412');
                        }
                    }else{
-                        $cancel_follow =    HubkolCarefor::updateAll(['status'=>$status,'update_time'=>date('Y-m-d H:i:s',time())],['kol_id'=>$kol_id,'hub_id'=>$hub_id]);
+                        $cancel_follow =    HubkolCarefor::updateAll(['status'=>$status,'update_time'=>date('Y-m-d H:i:s',time())],['kol_id'=>$user_id,'hub_id'=>$this->uid]);
                         if ($cancel_follow){
                             $transaction->commit();
                             return  HttpCode::renderJSON($status,'ok','201');
@@ -300,12 +290,6 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                             return  HttpCode::renderJSON([],'error','412');
                         }
                    }
-               }else{
-                   return  HttpCode::renderJSON([],'请填写HUB资料','416');
-               }
-           }else{
-               return  HttpCode::renderJSON([],'只有HUB身份才可以关注哦','416');
-           }
        }else{
            return  HttpCode::renderJSON([],'请求方式出错','418');
        }
