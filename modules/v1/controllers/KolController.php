@@ -170,10 +170,13 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                   //3.该用户是否邀请过
 
                   $capacitys =   HubkolUser::find()->where(['id'=>$uid])->select(['capacity'])->asArray()->one();
+
                   if ($capacitys['capacity'] == 1){
                      $is_means = HubkolHub::find()->where(['uid'=>$uid])->count();
+                     print_r($is_means);
                      if ($is_means){
-                         $invite =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
+                         $invites =   HubkolKol::find()->where(['id'=>$kol_id])->select(['invite'])->asArray()->one();
+                         $invite = $invites['invite'];
                          print_r($invite);
                          die;
 
