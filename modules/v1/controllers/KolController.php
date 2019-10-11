@@ -180,7 +180,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                          $invite = json_decode(json_decode($invite,true),true);
                          foreach ($invite as $key =>$value){
                                if ($value['kol_id'] == 18){
-                                   return  HttpCode::renderJSON([],'您已经邀请过了','412');
+                                   return  HttpCode::jsonObj([],'您已经邀请过了','412');
                                }
                          }
 
