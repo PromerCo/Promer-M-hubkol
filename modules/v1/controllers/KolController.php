@@ -315,7 +315,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
    /*
     * 我关注（粉丝）
     */
-   public function actionFollowUser(){
+   public function actionFoluser(){
        $type = \Yii::$app->request->post('type')??0;
        if ($type == 0){
            //关注
