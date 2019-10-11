@@ -157,10 +157,9 @@ LEFT JOIN hubkol_user ON hubkol_user.id = hubkol_kol.uid
 LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
 WHERE hubkol_kol.id = $pro_id")->asArray()->one();
       //查看是否关注
-//      $capacity =   HubkolUser::find()->where(['id'=>$this->uid])->select(['capacity'])->asArray()->one()['capacity'];
-//        if ($capacity == 1){
-//            $hub_id = HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one();
-//            if (!empty($hub_id['id'])){
+
+           $hub_id = HubkolHub::find()->where(['uid'=>$pro_id])->select(['id'])->asArray()->one();
+            if (!empty($hub_id['id'])){
 
             $follow =   HubkolCarefor::find()->where(['kol_id'=>$this->uid,'hub_id'=>$pro_id])->select(['status'])->asArray()->one();
             if (empty($follow['status'])){
@@ -168,11 +167,10 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
             }else{
                 $data['status'] = $follow['status'];
             }
-
-//            }
-//        }else{
-//            $data['status'] = 0;
-//        }
+            }
+else{
+            $data['status'] = 0;
+        }
        $data['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$data['tags'].")")->asArray()->all();
         return  HttpCode::renderJSON($data,'ok','201');
     }
