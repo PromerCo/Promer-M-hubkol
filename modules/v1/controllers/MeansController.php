@@ -4,6 +4,7 @@ use backend\models\HubKolPush;
 use mhubkol\common\helps\HttpCode;
 use mhubkol\modules\v1\models\HubkolHub;
 use mhubkol\modules\v1\models\HubkolKol;
+use mhubkol\modules\v1\models\HubkolTags;
 use mhubkol\modules\v1\models\HubkolUser;
 use mhubkol\modules\v1\services\ParamsValidateService;
 use mhubkol\modules\v1\services\HubkolUserService;
@@ -201,6 +202,7 @@ class MeansController extends BaseController
                    LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
                    LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform
                    WHERE hubkol_kol.id = $kol_id")->asArray()->one();
+                   $enroll[$key]['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();
                 }
 
                 return HttpCode::renderJSON($enroll, 'ok', '201');
