@@ -43,7 +43,7 @@ class HubkolKol extends BaseModel
             [['phone'], 'string', 'max' => 11],
             [['follow_level'], 'string', 'max' => 6],
 //            ['email','email'],
-            [['profile'], 'string', 'max' => 100]
+//            [['profile'], 'string', 'max' => 100]
         ];
     }
 
