@@ -204,7 +204,7 @@ class MeansController extends BaseController
                    LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform
                    WHERE hubkol_kol.id = $kol_id")->asArray()->one();
 
-                   $enroll[$key]['list']['tags'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$enroll[$key]['list']['tags'].")")->asArray()->all();
+                //   $enroll[$key]['list']['tags'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$enroll[$key]['list']['tags'].")")->asArray()->all();
                 }
 
                 return HttpCode::renderJSON($enroll, 'ok', '201');
