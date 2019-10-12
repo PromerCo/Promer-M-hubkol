@@ -71,6 +71,7 @@ class UserController extends BaseController
             if (!$valid) {
                 return  HttpCode::renderJSON([],$pvs->getErrorSummary(true),'416');
             }
+
             $wechat_user = new HubkolUser();
             try {
                 $transaction = \Yii::$app->db->beginTransaction();
