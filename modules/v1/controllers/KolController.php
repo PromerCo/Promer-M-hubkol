@@ -201,7 +201,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                              foreach ($invite_data as $key =>$value){
                                  if ($value['hub_id'] == $hub_id['id'] ){
 
-                                     return  HttpCode::renderJSON([],'您已经邀请过了','412');
+                                     return  HttpCode::renderJSON([],'您已经邀请过了','200');
                                  }
                              }
                              $invite_json = json_decode($invite,true);
@@ -323,7 +323,7 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
 
        }else{
            //粉丝
-           $data =   HubkolUser::findBySql("SELECT avatar_url,nick_name,IF(capacity = 1,'HUB','KOL') as capacity,id FROM  hubkol_user WHERE  id in(SELECT kol_id FROM hubkol_carefor WHERE kol_id = $this->uid  and status = 1)")->asArray()->all();
+           $data =   HubkolUser::findBySql("SELECT avatar_url,nick_name,IF(capacity = 1,'HUB','KOL') as capacity,id FROM  hubkol_user WHERE  id in(SELECT hui_id FROM hubkol_carefor WHERE kol_id = $this->uid  and status = 1)")->asArray()->all();
        }
        return  HttpCode::jsonObj($data,'ok','201');
    }
