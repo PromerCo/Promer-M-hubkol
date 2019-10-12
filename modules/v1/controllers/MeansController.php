@@ -194,12 +194,17 @@ class MeansController extends BaseController
                 }else{
                     $enroll = json_decode(json_decode($bystander['enroll'], true), true);
                 }
+                foreach ($enroll as $key=>$value){
+                   $kol_id = $value['kol_id'];
+                   $enroll[$key]['list'] = HubkolKol::findBySql("SELECT hubkol_platform.title as platform_title,hubkol_kol.phone,hubkol_kol.city,
+                   hubkol_kol.tags,hubkol_follow.title as follow_title FROM hubkol_kol 
+                   LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
+                   LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform
+                   WHERE hubkol_kol.id = $kol_id")->asArray()->one();
+                }
+
                 return HttpCode::renderJSON($enroll, 'ok', '201');
             } else {
-                //KOL
-                $bystander = HubkolKol::find()->where(['id' => $push_id])->select(['enroll'])->asArray()->one();
-
-
                 return HttpCode::renderJSON([], '请求类型出错', '418');
             }
         }else{
