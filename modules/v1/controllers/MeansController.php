@@ -197,12 +197,14 @@ class MeansController extends BaseController
                 }
                 foreach ($enroll as $key=>$value){
                    $kol_id = $value['kol_id'];
+
                    $enroll[$key]['list'] = HubkolKol::findBySql("SELECT hubkol_platform.title as platform_title,hubkol_kol.phone,hubkol_kol.city,
                    hubkol_kol.tags,hubkol_follow.title as follow_title FROM hubkol_kol 
                    LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
                    LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform
                    WHERE hubkol_kol.id = $kol_id")->asArray()->one();
-                   $enroll[$key]['list']['tages'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$value['tags'].")")->asArray()->all();
+
+                   $enroll[$key]['list']['tags'] =   HubkolTags::findBySql("SELECT title,id FROM hubkol_tags WHERE id in (".$enroll[$key]['list']['tags'].")")->asArray()->all();
                 }
 
                 return HttpCode::renderJSON($enroll, 'ok', '201');
