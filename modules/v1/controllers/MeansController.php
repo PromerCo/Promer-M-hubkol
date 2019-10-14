@@ -4,10 +4,9 @@ use backend\models\HubKolPush;
 use mhubkol\common\helps\HttpCode;
 use mhubkol\modules\v1\models\HubkolHub;
 use mhubkol\modules\v1\models\HubkolKol;
-use mhubkol\modules\v1\models\HubkolTags;
 use mhubkol\modules\v1\models\HubkolUser;
-use mhubkol\modules\v1\services\ParamsValidateService;
 use mhubkol\modules\v1\services\HubkolUserService;
+use mhubkol\modules\v1\services\ParamsValidateService;
 
 /**miexhibit
  * Site controller
@@ -198,7 +197,7 @@ class MeansController extends BaseController
                 foreach ($enroll as $key=>$value){
                    $kol_id = $value['kol_id'];
                    $enroll[$key]['list'] = HubkolKol::findBySql("SELECT hubkol_platform.title as platform_title,hubkol_kol.phone,hubkol_kol.city,
-                   hubkol_kol.tags,hubkol_follow.title as follow_title FROM hubkol_kol 
+                   hubkol_kol.tags,hubkol_follow.title as follow_title,hubkol_kol.tags FROM hubkol_kol 
                    LEFT JOIN hubkol_follow ON hubkol_kol.follow_level = hubkol_follow.id
                    LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform
                    WHERE hubkol_kol.id = $kol_id")->asArray()->one();
@@ -208,7 +207,6 @@ class MeansController extends BaseController
                     $enroll[$key]['list']['wechat'] =   $value['wechat'];
                     $enroll[$key]['list']['kol_id'] =   $value['kol_id'];
                 }
-
                 return HttpCode::renderJSON($enroll, 'ok', '201');
             } else {
                 return HttpCode::renderJSON([], '请求类型出错', '418');
@@ -217,8 +215,5 @@ class MeansController extends BaseController
             return HttpCode::renderJSON([], '请求类型出错', '418');
         }
     }
-
-
-
 
 }
