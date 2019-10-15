@@ -87,8 +87,11 @@ WHERE  hubkol_push.id = $push_id AND   hubkol_kol.uid=$this->uid")->asArray()->o
                   //微信号
                   $enroll_add['avatar_url'] =  $user_info['avatar_url'];
                   $enroll_add['nick_name'] =  $user_info['nick_name'];
+                  $enroll_add['gender'] =   $user_info['gender'];
+
                   $enroll_add['wechat'] =   $means['wechat'];
-                  $enroll_add['kol_id'] =  HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one()['id'];
+                  $enroll_add['kol_id'] =  HubkolKol::find()->where(['uid'=>$this->uid])->select(['id'])->asArray()->one()['id']; //网红ID
+
                   $enroll_add = json_encode($enroll_add);
                   $bm         = json_decode($enroll,true);
                   $bm = str_replace(array('[',']'), array('', ''), $bm);

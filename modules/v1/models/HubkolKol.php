@@ -42,8 +42,8 @@ class HubkolKol extends BaseModel
             [['wechat', 'email', 'mcn_organization', 'mcn_company', 'city', 'platform', 'tags', 'account'], 'string', 'max' => 30],
             [['phone'], 'string', 'max' => 11],
             [['follow_level'], 'string', 'max' => 6],
-//            ['email','email'],
-//            [['profile'], 'string', 'max' => 100]
+//          ['email','email'],
+//          [['profile'], 'string', 'max' => 100]
         ];
     }
 
