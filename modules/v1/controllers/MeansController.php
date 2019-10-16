@@ -64,6 +64,7 @@ class MeansController extends BaseController
                     if (!$valid) {
                         return  HttpCode::renderJSON([],$params->getErrors(),'412');
                     }
+
                     try {
                         $id  =  HubkolHub::find()->where(['uid'=>$this->uid])->select(['id'])->one();
                         if (!$id){
@@ -202,7 +203,13 @@ class MeansController extends BaseController
                    LEFT JOIN hubkol_platform ON hubkol_platform.id = hubkol_kol.platform
                    WHERE hubkol_kol.id = $kol_id")->asArray()->one();
                     $enroll[$key]['list']['avatar_url'] =   $value['avatar_url'];
-                    $enroll[$key]['list']['gender'] =   $value['gender'];
+
+                    if (empty($value['gender'])){
+                        $enroll[$key]['list']['gender'] = 2;
+                    }else{
+                        $enroll[$key]['list']['gender'] =   $value['gender'];
+                    }
+
                     $enroll[$key]['list']['nick_name'] =   $value['nick_name'];
                     $enroll[$key]['list']['wechat'] =   $value['wechat'];
                     $enroll[$key]['list']['kol_id'] =   $value['kol_id'];
