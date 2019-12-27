@@ -226,7 +226,6 @@ WHERE hubkol_kol.id = $pro_id")->asArray()->one();
                              $transaction->commit();  //提交事务
                              return  HttpCode::renderJSON($userinfo['avatar_url'],'邀请成功','201');
                          }else{
-
                              return  HttpCode::renderJSON([],'邀请失败','416');
                          }
                      }else{
