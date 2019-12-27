@@ -60,6 +60,7 @@ class DouyinController extends Controller
                 ])->select(['author_id','rank',
                     'updown','name','avatar','category','platform','pt','fans',
                     'episode_avg_played','episode_avg_thumbs','episode_avg_comments',
+                    'interactive_incr','interactive_incr','score'])->asArray()->offset($page)->orderBy( 'rank ASC')->groupBy('rank')->limit(20)->all();
                     'interactive_incr','interactive_incr','score'])->asArray()->offset($page)->orderBy( 'rank ASC')->groupBy('author_id')->limit(20)->all();
             }
         return   HttpCode::renderJSON($data,'ok','200');
