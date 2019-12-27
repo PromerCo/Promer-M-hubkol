@@ -1,4 +1,5 @@
 <?php
+
 namespace mhubkol\modules\v1\models;
 
 use Yii;
@@ -6,12 +7,14 @@ use Yii;
 /**
  * This is the model class for table "hubkol_carefor".
  *
+<<<<<<< HEAD
  * @property integer $id
  * @property integer $hub_id
  * @property integer $kol_id
  * @property string $status
  * @property string $create_date
  * @property string $update_time
+
  */
 class HubkolCarefor extends \backend\models\BaseModel
 {
@@ -28,11 +31,13 @@ class HubkolCarefor extends \backend\models\BaseModel
      */
     public function rules()
     {
+
         return [
             [['hub_id', 'kol_id'], 'required'],
             [['hub_id', 'kol_id'], 'integer'],
             [['create_date', 'update_time'], 'safe'],
             [['status'], 'string', 'max' => 6]
+
         ];
     }
 
@@ -42,6 +47,7 @@ class HubkolCarefor extends \backend\models\BaseModel
     public function attributeLabels()
     {
         return [
+
             'id' => 'ID',
             'hub_id' => 'Hub ID',
             'kol_id' => 'Kol ID',
@@ -90,7 +96,11 @@ class HubkolCarefor extends \backend\models\BaseModel
                         'isDisplay' => true,
                         'isSort' => true,
 //                         'udc'=>'',
+
                     ),
+
+
+
 		'hub_id' => array(
                         'name' => 'hub_id',
                         'allowNull' => false,
@@ -112,8 +122,9 @@ class HubkolCarefor extends \backend\models\BaseModel
                         'isSearch' => false,
                         'isDisplay' => true,
                         'isSort' => true,
-//                         'udc'=>'',
+
                     ),
+
 		'kol_id' => array(
                         'name' => 'kol_id',
                         'allowNull' => false,
@@ -137,6 +148,7 @@ class HubkolCarefor extends \backend\models\BaseModel
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
+
 		'status' => array(
                         'name' => 'status',
                         'allowNull' => true,
@@ -158,8 +170,8 @@ class HubkolCarefor extends \backend\models\BaseModel
                         'isSearch' => false,
                         'isDisplay' => true,
                         'isSort' => true,
-//                         'udc'=>'',
                     ),
+
 		'create_date' => array(
                         'name' => 'create_date',
                         'allowNull' => false,
@@ -183,6 +195,7 @@ class HubkolCarefor extends \backend\models\BaseModel
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
+
 		'update_time' => array(
                         'name' => 'update_time',
                         'allowNull' => true,
@@ -205,7 +218,9 @@ class HubkolCarefor extends \backend\models\BaseModel
                         'isDisplay' => true,
                         'isSort' => true,
 //                         'udc'=>'',
+
                     ),
+
 		        );
         
     }
