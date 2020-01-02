@@ -34,6 +34,7 @@ class DouyinController extends Controller
      * 榜单列表
      */
     public function  actionIndex(){
+
         $page = \Yii::$app->request->get('page')??0; //页数
         $pt =  \Yii::$app->request->get('pt')??201949; //时间
         $category = \Yii::$app->request->get('category')??'不限'; //标签
@@ -45,7 +46,8 @@ class DouyinController extends Controller
                  }else{
                      $data =  HubkolBillboard::find()->where([
                          'platform'=>$platform,
-                         'pt'=>$pt
+                         'pt'=>$pt,
+                         'status'=>'1'
                      ])->select(['author_id','rank',
                          'updown','name','avatar','category','platform','pt','fans',
                          'episode_avg_played','episode_avg_thumbs','episode_avg_comments',
@@ -56,7 +58,8 @@ class DouyinController extends Controller
                 $data =  HubkolBillboard::find()->where([
                     'category'=>$category,
                     'platform'=>$platform,
-                    'pt'=>$pt
+                    'pt'=>$pt,
+                    'status'=>'0'
                 ])->select(['author_id','rank',
                     'updown','name','avatar','category','platform','pt','fans',
                     'episode_avg_played','episode_avg_thumbs','episode_avg_comments',
